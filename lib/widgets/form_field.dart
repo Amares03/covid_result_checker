@@ -18,6 +18,7 @@ class MyFormField extends StatefulWidget {
 }
 
 class _MyFormFieldState extends State<MyFormField> {
+  final formKey = GlobalKey<FormState>();
   TextEditingController fullName = TextEditingController();
   TextEditingController passportNum = TextEditingController();
   TextEditingController dbo = TextEditingController();
@@ -42,6 +43,13 @@ class _MyFormFieldState extends State<MyFormField> {
             decoration: InputDecoration(
               hintText: 'Enter your full name',
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "cannot be empty";
+              } else {
+                return null;
+              }
+            },
           ),
           SizedBox(height: 20),
           TextFormField(
@@ -49,6 +57,13 @@ class _MyFormFieldState extends State<MyFormField> {
             decoration: InputDecoration(
               hintText: 'Enter your passport number',
             ),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return "cannot be empty";
+              } else {
+                return null;
+              }
+            },
           ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)
@@ -57,6 +72,13 @@ class _MyFormFieldState extends State<MyFormField> {
               decoration: InputDecoration(
                 hintText: 'Enter your DBO',
               ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "cannot be empty";
+                } else {
+                  return null;
+                }
+              },
             ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)
@@ -65,6 +87,13 @@ class _MyFormFieldState extends State<MyFormField> {
               decoration: InputDecoration(
                 hintText: 'Enter your nationality',
               ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "cannot be empty";
+                } else {
+                  return null;
+                }
+              },
             ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)
@@ -73,6 +102,13 @@ class _MyFormFieldState extends State<MyFormField> {
               decoration: InputDecoration(
                 hintText: 'Enter your Phone number',
               ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "cannot be empty";
+                } else {
+                  return null;
+                }
+              },
             ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)
@@ -81,6 +117,13 @@ class _MyFormFieldState extends State<MyFormField> {
               decoration: InputDecoration(
                 hintText: 'Enter your result',
               ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "cannot be empty";
+                } else {
+                  return null;
+                }
+              },
             ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)
@@ -89,6 +132,13 @@ class _MyFormFieldState extends State<MyFormField> {
               decoration: InputDecoration(
                 hintText: 'Enter your result date',
               ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "cannot be empty";
+                } else {
+                  return null;
+                }
+              },
             ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)
@@ -97,6 +147,13 @@ class _MyFormFieldState extends State<MyFormField> {
               decoration: InputDecoration(
                 hintText: 'Enter your Dr name',
               ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "cannot be empty";
+                } else {
+                  return null;
+                }
+              },
             ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)

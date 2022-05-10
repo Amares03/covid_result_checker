@@ -1,6 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:covid_result_checker/widgets/form_field.dart';
 import 'package:flutter/material.dart';
+
+enum FormType { AddUser, UpdateUser, DeleteUser }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,19 +23,42 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           EditingButton(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyFormField(formType: FormType.AddUser),
+                ),
+              );
+            },
             color: Colors.green,
             text: 'Create a user',
           ),
           SizedBox(height: 20),
           EditingButton(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      MyFormField(formType: FormType.UpdateUser),
+                ),
+              );
+            },
             color: Colors.red,
             text: 'Update a user',
           ),
           SizedBox(height: 20),
           EditingButton(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      MyFormField(formType: FormType.DeleteUser),
+                ),
+              );
+            },
             color: Colors.blue,
             text: 'delete a user',
           ),

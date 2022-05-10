@@ -1,6 +1,7 @@
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:flutter/material.dart';
 
+//  https://covid-result-tester.herokuapp.com/
 class MyFormField extends StatefulWidget {
   const MyFormField({Key? key, required this.formType}) : super(key: key);
   final Enum formType;

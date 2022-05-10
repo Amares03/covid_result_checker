@@ -1,7 +1,14 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:covid_result_checker/pages/home_page.dart';
+import 'package:covid_result_checker/services/createUser.dart';
+import 'package:covid_result_checker/services/userModel.dart';
 import 'package:flutter/material.dart';
 
 //  https://covid-result-tester.herokuapp.com/
+
+CreateUser createUser = CreateUser();
+
 class MyFormField extends StatefulWidget {
   const MyFormField({Key? key, required this.formType}) : super(key: key);
   final Enum formType;
@@ -12,10 +19,14 @@ class MyFormField extends StatefulWidget {
 
 class _MyFormFieldState extends State<MyFormField> {
   TextEditingController fullName = TextEditingController();
-  TextEditingController passportnum = TextEditingController();
-  TextEditingController sex = TextEditingController();
+  TextEditingController passportNum = TextEditingController();
   TextEditingController dbo = TextEditingController();
+  TextEditingController nationality = TextEditingController();
+  TextEditingController phone = TextEditingController();
   TextEditingController result = TextEditingController();
+  TextEditingController resultDate = TextEditingController();
+  TextEditingController reviewedBy = TextEditingController();
+  TextEditingController sex = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -34,19 +45,11 @@ class _MyFormFieldState extends State<MyFormField> {
           ),
           SizedBox(height: 20),
           TextFormField(
-            controller: passportnum,
+            controller: passportNum,
             decoration: InputDecoration(
               hintText: 'Enter your passport number',
             ),
           ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
-            TextFormField(
-              controller: sex,
-              decoration: InputDecoration(
-                hintText: 'Enter your sex',
-              ),
-            ),
           SizedBox(height: 20),
           if (widget.formType != FormType.DeleteUser)
             TextFormField(
@@ -55,10 +58,76 @@ class _MyFormFieldState extends State<MyFormField> {
                 hintText: 'Enter your DBO',
               ),
             ),
+          SizedBox(height: 20),
+          if (widget.formType != FormType.DeleteUser)
+            TextFormField(
+              controller: nationality,
+              decoration: InputDecoration(
+                hintText: 'Enter your nationality',
+              ),
+            ),
+          SizedBox(height: 20),
+          if (widget.formType != FormType.DeleteUser)
+            TextFormField(
+              controller: phone,
+              decoration: InputDecoration(
+                hintText: 'Enter your Phone number',
+              ),
+            ),
+          SizedBox(height: 20),
+          if (widget.formType != FormType.DeleteUser)
+            TextFormField(
+              controller: result,
+              decoration: InputDecoration(
+                hintText: 'Enter your result',
+              ),
+            ),
+          SizedBox(height: 20),
+          if (widget.formType != FormType.DeleteUser)
+            TextFormField(
+              controller: resultDate,
+              decoration: InputDecoration(
+                hintText: 'Enter your result date',
+              ),
+            ),
+          SizedBox(height: 20),
+          if (widget.formType != FormType.DeleteUser)
+            TextFormField(
+              controller: reviewedBy,
+              decoration: InputDecoration(
+                hintText: 'Enter your Dr name',
+              ),
+            ),
+          SizedBox(height: 20),
+          if (widget.formType != FormType.DeleteUser)
+            TextFormField(
+              controller: sex,
+              decoration: InputDecoration(
+                hintText: 'Enter your sex',
+              ),
+              validator: (value) {
+                if (value!.isEmpty) {
+                  return "cannot be empty";
+                } else {
+                  return null;
+                }
+              },
+            ),
           SizedBox(height: 30),
           EditingButton(
-            onTap: () {
-              if (widget.formType == FormType.AddUser) {}
+            onTap: () async {
+              if (widget.formType == FormType.AddUser) {
+                final UserModel user = await createUser.createUser(
+                    fullName.text,
+                    passportNum.text,
+                    dbo.text,
+                    nationality.text,
+                    phone.text,
+                    result.text,
+                    resultDate.text,
+                    reviewedBy.text,
+                    sex.text);
+              }
               if (widget.formType == FormType.UpdateUser) {}
               if (widget.formType == FormType.DeleteUser) {}
             },

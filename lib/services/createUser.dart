@@ -19,7 +19,7 @@ class CreateUser {
     String reviewedBy,
     String sex,
   ) async {
-    final String apiUrl = "https://iclilaboratory.herokuapp.com/api/user";
+    final String apiUrl = "https://covid-result-tester.herokuapp.com/api/users";
     final Uri url = Uri.parse(apiUrl);
 
     final response = await http.post(url, body: {

@@ -5,8 +5,6 @@ import 'package:covid_result_checker/services/createUser.dart';
 import 'package:covid_result_checker/services/userModel.dart';
 import 'package:flutter/material.dart';
 
-//  https://covid-result-tester.herokuapp.com/
-
 CreateUser createUser = CreateUser();
 
 class MyFormField extends StatefulWidget {

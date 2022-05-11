@@ -1,6 +1,9 @@
+import 'package:covid_result_checker/main.dart';
 import 'package:covid_result_checker/widgets/big_text.dart';
 import 'package:covid_result_checker/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
+
+import 'home_page.dart';
 
 // use this colors
 // 1ab7c3
@@ -85,7 +88,30 @@ class _LoginPageState extends State<LoginPage> {
                       letterSpacing: 1,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    if (emailController.text.isEmpty) {
+                      CommonMethods.displaySnackBar(context, title: 'Email can\'t be empty!');
+                    } else if (!emailController.text.contains('@') ||
+                        !emailController.text.contains('.')) {
+                      CommonMethods.displaySnackBar(
+                        context,
+                        title: 'Make sure your email is correct',
+                      );
+                    } else if (passwordController.text.isEmpty) {
+                      CommonMethods.displaySnackBar(context, title: 'Password can\'t be empty!');
+                    } else if (passwordController.text.length <= 4) {
+                      CommonMethods.displaySnackBar(
+                        context,
+                        title: 'Password length must be greater than 4!',
+                      );
+                    } else {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomePage()),
+                        (route) => false,
+                      );
+                    }
+                  },
                   child: const Text('Login'),
                 ),
               ),

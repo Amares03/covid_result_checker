@@ -33,42 +33,15 @@ class _MyFormFieldState extends State<MyFormField> {
       appBar: AppBar(
         title: Text('Form Field'),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFormField(
-            controller: fullName,
-            decoration: InputDecoration(
-              hintText: 'Enter your full name',
-            ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "cannot be empty";
-              } else {
-                return null;
-              }
-            },
-          ),
-          SizedBox(height: 20),
-          TextFormField(
-            controller: passportNum,
-            decoration: InputDecoration(
-              hintText: 'Enter your passport number',
-            ),
-            validator: (value) {
-              if (value!.isEmpty) {
-                return "cannot be empty";
-              } else {
-                return null;
-              }
-            },
-          ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
+      body: Form(
+        key: formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             TextFormField(
-              controller: dbo,
+              controller: fullName,
               decoration: InputDecoration(
-                hintText: 'Enter your DBO',
+                hintText: 'Enter your full name',
               ),
               validator: (value) {
                 if (value!.isEmpty) {
@@ -78,12 +51,11 @@ class _MyFormFieldState extends State<MyFormField> {
                 }
               },
             ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
+            SizedBox(height: 20),
             TextFormField(
-              controller: nationality,
+              controller: passportNum,
               decoration: InputDecoration(
-                hintText: 'Enter your nationality',
+                hintText: 'Enter your passport number',
               ),
               validator: (value) {
                 if (value!.isEmpty) {
@@ -93,107 +65,139 @@ class _MyFormFieldState extends State<MyFormField> {
                 }
               },
             ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
-            TextFormField(
-              controller: phone,
-              decoration: InputDecoration(
-                hintText: 'Enter your Phone number',
+            SizedBox(height: 20),
+            if (widget.formType != FormType.DeleteUser)
+              TextFormField(
+                controller: dbo,
+                decoration: InputDecoration(
+                  hintText: 'Enter your DBO',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "cannot be empty";
+                  } else {
+                    return null;
+                  }
+                },
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "cannot be empty";
-                } else {
-                  return null;
-                }
-              },
-            ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
-            TextFormField(
-              controller: result,
-              decoration: InputDecoration(
-                hintText: 'Enter your result',
+            SizedBox(height: 20),
+            if (widget.formType != FormType.DeleteUser)
+              TextFormField(
+                controller: nationality,
+                decoration: InputDecoration(
+                  hintText: 'Enter your nationality',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "cannot be empty";
+                  } else {
+                    return null;
+                  }
+                },
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "cannot be empty";
-                } else {
-                  return null;
-                }
-              },
-            ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
-            TextFormField(
-              controller: resultDate,
-              decoration: InputDecoration(
-                hintText: 'Enter your result date',
+            SizedBox(height: 20),
+            if (widget.formType != FormType.DeleteUser)
+              TextFormField(
+                controller: phone,
+                decoration: InputDecoration(
+                  hintText: 'Enter your Phone number',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "cannot be empty";
+                  } else {
+                    return null;
+                  }
+                },
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "cannot be empty";
-                } else {
-                  return null;
-                }
-              },
-            ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
-            TextFormField(
-              controller: reviewedBy,
-              decoration: InputDecoration(
-                hintText: 'Enter your Dr name',
+            SizedBox(height: 20),
+            if (widget.formType != FormType.DeleteUser)
+              TextFormField(
+                controller: result,
+                decoration: InputDecoration(
+                  hintText: 'Enter your result',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "cannot be empty";
+                  } else {
+                    return null;
+                  }
+                },
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "cannot be empty";
-                } else {
-                  return null;
-                }
-              },
-            ),
-          SizedBox(height: 20),
-          if (widget.formType != FormType.DeleteUser)
-            TextFormField(
-              controller: sex,
-              decoration: InputDecoration(
-                hintText: 'Enter your sex',
+            SizedBox(height: 20),
+            if (widget.formType != FormType.DeleteUser)
+              TextFormField(
+                controller: resultDate,
+                decoration: InputDecoration(
+                  hintText: 'Enter your result date',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "cannot be empty";
+                  } else {
+                    return null;
+                  }
+                },
               ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "cannot be empty";
-                } else {
-                  return null;
+            SizedBox(height: 20),
+            if (widget.formType != FormType.DeleteUser)
+              TextFormField(
+                controller: reviewedBy,
+                decoration: InputDecoration(
+                  hintText: 'Enter your Dr name',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "cannot be empty";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            SizedBox(height: 20),
+            if (widget.formType != FormType.DeleteUser)
+              TextFormField(
+                controller: sex,
+                decoration: InputDecoration(
+                  hintText: 'Enter your sex',
+                ),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return "cannot be empty";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+            SizedBox(height: 30),
+            EditingButton(
+              onTap: () async {
+                if (widget.formType == FormType.AddUser) {
+                  final UserModel user = await createUser.createUser(
+                      fullName.text,
+                      passportNum.text,
+                      dbo.text,
+                      nationality.text,
+                      phone.text,
+                      result.text,
+                      resultDate.text,
+                      reviewedBy.text,
+                      sex.text);
+                  formKey.currentState!.reset();
                 }
+                if (widget.formType == FormType.UpdateUser) {}
+                if (widget.formType == FormType.DeleteUser) {}
               },
+              color: Colors.green,
+              text: widget.formType == FormType.AddUser
+                  ? 'Save user'
+                  : widget.formType == FormType.UpdateUser
+                      ? 'Update User'
+                      : 'Delete user',
             ),
-          SizedBox(height: 30),
-          EditingButton(
-            onTap: () async {
-              if (widget.formType == FormType.AddUser) {
-                final UserModel user = await createUser.createUser(
-                    fullName.text,
-                    passportNum.text,
-                    dbo.text,
-                    nationality.text,
-                    phone.text,
-                    result.text,
-                    resultDate.text,
-                    reviewedBy.text,
-                    sex.text);
-              }
-              if (widget.formType == FormType.UpdateUser) {}
-              if (widget.formType == FormType.DeleteUser) {}
-            },
-            color: Colors.green,
-            text: widget.formType == FormType.AddUser
-                ? 'Save user'
-                : widget.formType == FormType.UpdateUser
-                    ? 'Update User'
-                    : 'Delete user',
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

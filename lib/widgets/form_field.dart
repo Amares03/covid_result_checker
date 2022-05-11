@@ -190,7 +190,19 @@ class _MyFormFieldState extends State<MyFormField> {
                           sex.text);
                       formKey.currentState!.reset();
                     }
-                    if (widget.formType == FormType.UpdateUser) {}
+                    if (widget.formType == FormType.UpdateUser) {
+                      final UserModel userUpdate = await updateUser.updateUser(
+                          fullName.text,
+                          passportNum.text,
+                          dbo.text,
+                          nationality.text,
+                          phone.text,
+                          result.text,
+                          resultDate.text,
+                          reviewedBy.text,
+                          sex.text);
+                      formKey.currentState!.reset();
+                    }
                     if (widget.formType == FormType.DeleteUser) {}
                   },
                   color: Colors.green,
@@ -203,7 +215,7 @@ class _MyFormFieldState extends State<MyFormField> {
                 if (widget.formType != FormType.UpdateUser)
                   EditingButton(
                       onTap: () async {
-                        final UserModel userUpdate =
+                        final UserModel userFind =
                             await updateUser.findUser(passportNum.text);
                         dynamic userInfo = updateUser.getUserInfo();
                         fullName.text = userInfo['fullname'];

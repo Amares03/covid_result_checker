@@ -2,10 +2,12 @@
 
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/services/createUser.dart';
+import 'package:covid_result_checker/services/updateUser.dart';
 import 'package:covid_result_checker/services/userModel.dart';
 import 'package:flutter/material.dart';
 
 CreateUser createUser = CreateUser();
+UpdateUser updateUser = UpdateUser();
 
 class MyFormField extends StatefulWidget {
   const MyFormField({Key? key, required this.formType}) : super(key: key);
@@ -171,30 +173,42 @@ class _MyFormFieldState extends State<MyFormField> {
                 },
               ),
             SizedBox(height: 30),
-            EditingButton(
-              onTap: () async {
-                if (widget.formType == FormType.AddUser) {
-                  final UserModel user = await createUser.createUser(
-                      fullName.text,
-                      passportNum.text,
-                      dbo.text,
-                      nationality.text,
-                      phone.text,
-                      result.text,
-                      resultDate.text,
-                      reviewedBy.text,
-                      sex.text);
-                  formKey.currentState!.reset();
-                }
-                if (widget.formType == FormType.UpdateUser) {}
-                if (widget.formType == FormType.DeleteUser) {}
-              },
-              color: Colors.green,
-              text: widget.formType == FormType.AddUser
-                  ? 'Save user'
-                  : widget.formType == FormType.UpdateUser
-                      ? 'Update User'
-                      : 'Delete user',
+            Row(
+              children: [
+                EditingButton(
+                  onTap: () async {
+                    if (widget.formType == FormType.AddUser) {
+                      final UserModel user = await createUser.createUser(
+                          fullName.text,
+                          passportNum.text,
+                          dbo.text,
+                          nationality.text,
+                          phone.text,
+                          result.text,
+                          resultDate.text,
+                          reviewedBy.text,
+                          sex.text);
+                      formKey.currentState!.reset();
+                    }
+                    if (widget.formType == FormType.UpdateUser) {}
+                    if (widget.formType == FormType.DeleteUser) {}
+                  },
+                  color: Colors.green,
+                  text: widget.formType == FormType.AddUser
+                      ? 'Save user'
+                      : widget.formType == FormType.UpdateUser
+                          ? 'Update User'
+                          : 'Delete user',
+                ),
+                if (widget.formType != FormType.UpdateUser)
+                  EditingButton(
+                      onTap: () async {
+                        final UserModel userUpdate =
+                            await updateUser.updateUser(passportNum.text);
+                      },
+                      color: Colors.green,
+                      text: 'find')
+              ],
             ),
           ],
         ),

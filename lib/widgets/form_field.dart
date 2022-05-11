@@ -190,7 +190,9 @@ class _MyFormFieldState extends State<MyFormField> {
                           sex.text);
                       formKey.currentState!.reset();
                     }
-                    if (widget.formType == FormType.UpdateUser) {}
+                    if (widget.formType == FormType.UpdateUser) {
+                      
+                    }
                     if (widget.formType == FormType.DeleteUser) {}
                   },
                   color: Colors.green,

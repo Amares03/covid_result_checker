@@ -21,7 +21,10 @@ class CommonMethods {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          backgroundColor: bgColor ?? Colors.grey,
+          margin: const EdgeInsets.all(20),
+          behavior: SnackBarBehavior.floating,
+          dismissDirection: DismissDirection.horizontal,
+          backgroundColor: bgColor ?? Colors.blueGrey,
           content: Text(title, textAlign: TextAlign.center),
           duration: const Duration(milliseconds: 1700),
         ),

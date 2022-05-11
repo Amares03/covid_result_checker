@@ -1,6 +1,5 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:covid_result_checker/pages/home_page.dart';
+import 'package:covid_result_checker/widgets/big_text.dart';
+import 'package:covid_result_checker/widgets/my_text_field.dart';
 import 'package:flutter/material.dart';
 
 // use this colors
@@ -15,39 +14,85 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController email = TextEditingController();
-  TextEditingController password = TextEditingController();
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Log page'),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 100),
+              Image.asset(
+                'assets/logo.png',
+                height: 140,
+                width: 200,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 20),
+              Wrap(
+                children: const [
+                  BigText(text: 'CO'),
+                  BigText(text: 'V', color: Colors.red),
+                  BigText(text: 'ID RESULT'),
+                ],
+              ),
+              const SizedBox(height: 5),
+              const BigText(text: 'CHECKER'),
+              const SizedBox(height: 50),
+              MyTextField(
+                controller: emailController,
+                hintText: 'example@example.com',
+                title: 'Company email',
+                keyboardType: TextInputType.emailAddress,
+                icon: Icons.email,
+              ),
+              const SizedBox(height: 15),
+              MyTextField(
+                controller: passwordController,
+                title: 'Company password',
+                hintText: 'Company\'s service number',
+                keyboardType: TextInputType.visiblePassword,
+                icon: Icons.lock,
+              ),
+              const SizedBox(height: 30),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightBlueAccent,
+                    minimumSize: const Size(double.maxFinite, 50),
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1,
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: const Text('Login'),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        TextFormField(
-          controller: email,
-          decoration: InputDecoration(hintText: 'enter your email'),
-        ),
-        SizedBox(height: 20),
-        TextFormField(
-          controller: password,
-          decoration: InputDecoration(hintText: 'enter your password'),
-        ),
-        SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: () {
-            final emails = email.text;
-            final passwords = password.text;
-            print(emails);
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-              (route) => false,
-            );
-          },
-          child: Text('Login'),
-        ),
-      ]),
     );
   }
 }

@@ -67,6 +67,23 @@ class UpdateUser {
     }
   }
 
+  Future<UserModel> deleteUser(
+    String passportNum,
+  ) async {
+    final String apiUrl =
+        "https://covid-result-tester.herokuapp.com/api/users/${passportNum}";
+    final Uri url = Uri.parse(apiUrl);
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final String responseString = response.body;
+      return userModelFromJson(responseString);
+    } else {
+      const String responseString = "not Deleted";
+      return userModelFromJson(responseString);
+    }
+  }
+
   dynamic getUserInfo() {
     return iddd;
   }

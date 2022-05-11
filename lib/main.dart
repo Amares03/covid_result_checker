@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(
     const MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Covid Result Checker',
       home: LoginPage(),
     ),
   );

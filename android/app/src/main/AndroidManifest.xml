@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.covid_result_checker">
    <application
-        android:label="covid_result_checker"
+        android:label="Covid Result Checker"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

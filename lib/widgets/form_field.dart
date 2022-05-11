@@ -203,7 +203,10 @@ class _MyFormFieldState extends State<MyFormField> {
                           sex.text);
                       formKey.currentState!.reset();
                     }
-                    if (widget.formType == FormType.DeleteUser) {}
+                    if (widget.formType == FormType.DeleteUser) {
+                      final UserModel userDelete =
+                          await updateUser.deleteUser(passportNum.text);
+                    }
                   },
                   color: Colors.green,
                   text: widget.formType == FormType.AddUser

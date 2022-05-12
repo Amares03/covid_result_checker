@@ -190,8 +190,23 @@ class _MyFormFieldState extends State<MyFormField> {
                           sex.text);
                       formKey.currentState!.reset();
                     }
-                    if (widget.formType == FormType.UpdateUser) {}
-                    if (widget.formType == FormType.DeleteUser) {}
+                    if (widget.formType == FormType.UpdateUser) {
+                      final UserModel userUpdate = await updateUser.updateUser(
+                          fullName.text,
+                          passportNum.text,
+                          dbo.text,
+                          nationality.text,
+                          phone.text,
+                          result.text,
+                          resultDate.text,
+                          reviewedBy.text,
+                          sex.text);
+                      formKey.currentState!.reset();
+                    }
+                    if (widget.formType == FormType.DeleteUser) {
+                      final UserModel userDelete =
+                          await updateUser.deleteUser(passportNum.text);
+                    }
                   },
                   color: Colors.green,
                   text: widget.formType == FormType.AddUser
@@ -203,8 +218,18 @@ class _MyFormFieldState extends State<MyFormField> {
                 if (widget.formType != FormType.UpdateUser)
                   EditingButton(
                       onTap: () async {
-                        final UserModel userUpdate =
-                            await updateUser.updateUser(passportNum.text);
+                        final UserModel userFind =
+                            await updateUser.findUser(passportNum.text);
+                        dynamic userInfo = updateUser.getUserInfo();
+                        fullName.text = userInfo['fullname'];
+                        passportNum.text = userInfo['passportNum'];
+                        dbo.text = userInfo['dbo'];
+                        nationality.text = userInfo['nationality'];
+                        phone.text = userInfo['phone'];
+                        result.text = userInfo['result'];
+                        resultDate.text = userInfo['resultDate'];
+                        reviewedBy.text = userInfo['reviewedBy'];
+                        sex.text = userInfo['sex'];
                       },
                       color: Colors.green,
                       text: 'find')

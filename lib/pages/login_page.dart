@@ -90,7 +90,8 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     if (emailController.text.isEmpty) {
-                      CommonMethods.displaySnackBar(context, title: 'Email can\'t be empty!');
+                      CommonMethods.displaySnackBar(context,
+                          title: 'Email can\'t be empty!');
                     } else if (!emailController.text.contains('@') ||
                         !emailController.text.contains('.')) {
                       CommonMethods.displaySnackBar(
@@ -98,7 +99,8 @@ class _LoginPageState extends State<LoginPage> {
                         title: 'Make sure your email is correct',
                       );
                     } else if (passwordController.text.isEmpty) {
-                      CommonMethods.displaySnackBar(context, title: 'Password can\'t be empty!');
+                      CommonMethods.displaySnackBar(context,
+                          title: 'Password can\'t be empty!');
                     } else if (passwordController.text.length <= 4) {
                       CommonMethods.displaySnackBar(
                         context,
@@ -107,7 +109,8 @@ class _LoginPageState extends State<LoginPage> {
                     } else {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomePage()),
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
                         (route) => false,
                       );
                     }

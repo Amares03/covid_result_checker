@@ -16,10 +16,10 @@ class BigText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontSize: fontSize ?? 20,
+        fontSize: fontSize ?? 24,
         fontWeight: FontWeight.bold,
         letterSpacing: 1,
-        color: color ?? Colors.black54,
+        color: color ?? Colors.grey.shade700,
       ),
     );
   }

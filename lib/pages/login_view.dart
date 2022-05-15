@@ -1,4 +1,4 @@
-import 'package:covid_result_checker/widgets/skew_shape.dart';
+import 'package:covid_result_checker/widgets/gradient_background.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
 import 'package:flutter/material.dart';
@@ -33,30 +33,7 @@ class _RegisterViewState extends State<RegisterView> {
     return Stack(
       children: [
         Container(height: double.maxFinite, color: Colors.white),
-        Positioned(
-          bottom: 0,
-          right: 0,
-          left: 0,
-          child: ClipPath(
-            clipper: SkewCut(context),
-            child: Container(
-              height: 350,
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.blue.shade900,
-                    Colors.blue.shade700,
-                    Colors.cyan.shade400,
-                    Colors.cyan.shade200,
-                  ],
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
-                ),
-              ),
-            ),
-          ),
-        ),
+        const GradientBackground(),
         Scaffold(
           backgroundColor: Colors.transparent,
           body: Padding(

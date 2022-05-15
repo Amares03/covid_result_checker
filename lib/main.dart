@@ -1,4 +1,4 @@
-import 'package:covid_result_checker/pages/login_page.dart';
+import 'package:covid_result_checker/pages/register_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -6,7 +6,7 @@ void main() {
     const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Covid Result Checker',
-      home: LoginPage(),
+      home: RegisterView(),
     ),
   );
 }

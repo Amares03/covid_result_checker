@@ -86,6 +86,7 @@ class _RegisterViewState extends State<RegisterView> {
                           TxTField(
                             editingController: confirmController,
                             hintText: 'confirm service number',
+                            isPassword: true,
                           ),
                           const SizedBox(height: 20),
                           // register button

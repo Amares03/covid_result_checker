@@ -76,6 +76,7 @@ class _LoginViewState extends State<LoginView> {
                           TxTField(
                             editingController: passwordController,
                             hintText: 'official service number',
+                            isPassword: true,
                           ),
                           const SizedBox(height: 20),
                           BigButton(

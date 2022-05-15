@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "816398397761",
+    "project_id": "covid-result-checker-121",
+    "storage_bucket": "covid-result-checker-121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816398397761:android:eec0136a9886cab21031c0",
+        "android_client_info": {
+          "package_name": "com.example.covid_result_checker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816398397761-sd7au0ecqkmogb9o6kj96vgifud0apg1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_Lq2HqhN8YUEeWmRxXb9WeSIZURqo7L0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816398397761-sd7au0ecqkmogb9o6kj96vgifud0apg1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

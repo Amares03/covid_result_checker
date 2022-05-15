@@ -92,6 +92,7 @@ class _RegisterViewState extends State<RegisterView> {
                             onTap: () {},
                             text: 'Register',
                           ),
+                          const SizedBox(height: 10),
                           // optional login button
                           SmallButton(
                             onPressed: () {},

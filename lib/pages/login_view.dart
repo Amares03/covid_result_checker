@@ -1,3 +1,4 @@
+import 'package:covid_result_checker/pages/register_view.dart';
 import 'package:covid_result_checker/widgets/big_button.dart';
 import 'package:covid_result_checker/widgets/big_text.dart';
 import 'package:covid_result_checker/widgets/form_background_card.dart';
@@ -83,7 +84,15 @@ class _LoginViewState extends State<LoginView> {
                           ),
                           const SizedBox(height: 10),
                           SmallButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const RegisterView(),
+                                ),
+                                (route) => false,
+                              );
+                            },
                             longText: 'Don\'t have an account yet?',
                             buttonText: 'Register here.',
                           ),

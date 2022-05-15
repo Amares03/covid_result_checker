@@ -1,7 +1,12 @@
+import 'package:covid_result_checker/firebase_options.dart';
+import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -9,6 +14,44 @@ void main() {
       home: LoginView(),
     ),
   );
+}
+
+class FirstScreenHandler extends StatelessWidget {
+  const FirstScreenHandler({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ),
+      builder: ((context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            final user = FirebaseAuth.instance.currentUser;
+            if (user != null) {
+              if (user.emailVerified) {
+                return const HomePage();
+              } else {
+                // goto verify email view for let make it empty
+                return const SizedBox();
+              }
+            } else {
+              return const LoginView();
+            }
+          default:
+            return Container(
+              height: double.maxFinite,
+              width: double.maxFinite,
+              color: Colors.white,
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+        }
+      }),
+    );
+  }
 }
 
 class CommonMethods {

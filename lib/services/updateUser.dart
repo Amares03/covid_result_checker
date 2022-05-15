@@ -67,6 +67,24 @@ class UpdateUser {
     }
   }
 
+  Future<UserModel> findAllUser() async {
+    const String apiUrl = "https://covid-result-tester.herokuapp.com/api/users";
+    final Uri url = Uri.parse(apiUrl);
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final String resposeString = response.body;
+
+      // ignore: dead_code
+      iddd = jsonDecode(resposeString);
+      idd = jsonDecode(resposeString);
+      return userModelFromJson(resposeString);
+    } else {
+      const String responseString = "not worked";
+      return userModelFromJson(responseString);
+    }
+  }
+
   Future<UserModel> deleteUser(
     String passportNum,
   ) async {

@@ -6,7 +6,7 @@ var idd = "";
 var iddd = "";
 var sampleid = "";
 
-class UpdateUser {
+class ApiFunction {
   Future<UserModel> updateUser(
     String fullName,
     String passportNum,

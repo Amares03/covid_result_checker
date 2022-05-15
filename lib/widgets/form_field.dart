@@ -2,7 +2,7 @@
 
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/services/createUser.dart';
-import 'package:covid_result_checker/services/updateUser.dart';
+import 'package:covid_result_checker/services/apiFunctions.dart';
 import 'package:covid_result_checker/services/userModel.dart';
 import 'package:flutter/material.dart';
 

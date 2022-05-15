@@ -2,12 +2,12 @@
 
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/services/createUser.dart';
-import 'package:covid_result_checker/services/updateUser.dart';
+import 'package:covid_result_checker/services/apiFunctions.dart';
 import 'package:covid_result_checker/services/userModel.dart';
 import 'package:flutter/material.dart';
 
 CreateUser createUser = CreateUser();
-UpdateUser updateUser = UpdateUser();
+ApiFunction apiFunction = ApiFunction();
 
 class MyFormField extends StatefulWidget {
   const MyFormField({Key? key, required this.formType}) : super(key: key);
@@ -191,7 +191,7 @@ class _MyFormFieldState extends State<MyFormField> {
                       formKey.currentState!.reset();
                     }
                     if (widget.formType == FormType.UpdateUser) {
-                      final UserModel userUpdate = await updateUser.updateUser(
+                      final UserModel userUpdate = await apiFunction.updateUser(
                           fullName.text,
                           passportNum.text,
                           dbo.text,
@@ -205,7 +205,7 @@ class _MyFormFieldState extends State<MyFormField> {
                     }
                     if (widget.formType == FormType.DeleteUser) {
                       final UserModel userDelete =
-                          await updateUser.deleteUser(passportNum.text);
+                          await apiFunction.deleteUser(passportNum.text);
                     }
                   },
                   color: Colors.green,
@@ -219,8 +219,8 @@ class _MyFormFieldState extends State<MyFormField> {
                   EditingButton(
                       onTap: () async {
                         final UserModel userFind =
-                            await updateUser.findUser(passportNum.text);
-                        dynamic userInfo = updateUser.getUserInfo();
+                            await apiFunction.findUser(passportNum.text);
+                        dynamic userInfo = apiFunction.getUserInfo();
                         fullName.text = userInfo['fullname'];
                         passportNum.text = userInfo['passportNum'];
                         dbo.text = userInfo['dbo'];

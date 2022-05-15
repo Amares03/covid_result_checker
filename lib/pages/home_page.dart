@@ -3,7 +3,7 @@
 import 'package:covid_result_checker/widgets/form_field.dart';
 import 'package:flutter/material.dart';
 
-enum FormType { AddUser, UpdateUser, DeleteUser }
+enum FormType { AddUser, UpdateUser, DeleteUser, AllUser }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -61,6 +61,19 @@ class _HomePageState extends State<HomePage> {
             },
             color: Colors.blue,
             text: 'delete a user',
+          ),
+          SizedBox(height: 20),
+          EditingButton(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MyFormField(formType: FormType.AllUser),
+                ),
+              );
+            },
+            color: Color.fromARGB(255, 1, 8, 14),
+            text: 'view all users',
           ),
         ],
       ),

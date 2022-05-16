@@ -11,7 +11,7 @@ void main() {
     const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Covid Result Checker',
-      home: LoginView(),
+      home: HomePage(),
     ),
   );
 }

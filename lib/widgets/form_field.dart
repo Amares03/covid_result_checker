@@ -37,42 +37,14 @@ class _MyFormFieldState extends State<MyFormField> {
       ),
       body: Form(
         key: formKey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextFormField(
-              controller: fullName,
-              decoration: InputDecoration(
-                hintText: 'Enter your full name',
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "cannot be empty";
-                } else {
-                  return null;
-                }
-              },
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: passportNum,
-              decoration: InputDecoration(
-                hintText: 'Enter your passport number',
-              ),
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return "cannot be empty";
-                } else {
-                  return null;
-                }
-              },
-            ),
-            SizedBox(height: 20),
-            if (widget.formType != FormType.DeleteUser)
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               TextFormField(
-                controller: dbo,
+                controller: fullName,
                 decoration: InputDecoration(
-                  hintText: 'Enter your DBO',
+                  hintText: 'Enter your full name',
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -82,12 +54,11 @@ class _MyFormFieldState extends State<MyFormField> {
                   }
                 },
               ),
-            SizedBox(height: 20),
-            if (widget.formType != FormType.DeleteUser)
+              SizedBox(height: 20),
               TextFormField(
-                controller: nationality,
+                controller: passportNum,
                 decoration: InputDecoration(
-                  hintText: 'Enter your nationality',
+                  hintText: 'Enter your passport number',
                 ),
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -97,145 +68,181 @@ class _MyFormFieldState extends State<MyFormField> {
                   }
                 },
               ),
-            SizedBox(height: 20),
-            if (widget.formType != FormType.DeleteUser)
-              TextFormField(
-                controller: phone,
-                decoration: InputDecoration(
-                  hintText: 'Enter your Phone number',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            SizedBox(height: 20),
-            if (widget.formType != FormType.DeleteUser)
-              TextFormField(
-                controller: result,
-                decoration: InputDecoration(
-                  hintText: 'Enter your result',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            SizedBox(height: 20),
-            if (widget.formType != FormType.DeleteUser)
-              TextFormField(
-                controller: resultDate,
-                decoration: InputDecoration(
-                  hintText: 'Enter your result date',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            SizedBox(height: 20),
-            if (widget.formType != FormType.DeleteUser)
-              TextFormField(
-                controller: reviewedBy,
-                decoration: InputDecoration(
-                  hintText: 'Enter your Dr name',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            SizedBox(height: 20),
-            if (widget.formType != FormType.DeleteUser)
-              TextFormField(
-                controller: sex,
-                decoration: InputDecoration(
-                  hintText: 'Enter your sex',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-            SizedBox(height: 30),
-            Row(
-              children: [
-                EditingButton(
-                  onTap: () async {
-                    if (widget.formType == FormType.AddUser) {
-                      final UserModel user = await createUser.createUser(
-                          fullName.text,
-                          passportNum.text,
-                          dbo.text,
-                          nationality.text,
-                          phone.text,
-                          result.text,
-                          resultDate.text,
-                          reviewedBy.text,
-                          sex.text);
-                      formKey.currentState!.reset();
-                    }
-                    if (widget.formType == FormType.UpdateUser) {
-                      final UserModel userUpdate = await apiFunction.updateUser(
-                          fullName.text,
-                          passportNum.text,
-                          dbo.text,
-                          nationality.text,
-                          phone.text,
-                          result.text,
-                          resultDate.text,
-                          reviewedBy.text,
-                          sex.text);
-                      formKey.currentState!.reset();
-                    }
-                    if (widget.formType == FormType.DeleteUser) {
-                      final UserModel userDelete =
-                          await apiFunction.deleteUser(passportNum.text);
+              SizedBox(height: 20),
+              if (widget.formType != FormType.DeleteUser)
+                TextFormField(
+                  controller: dbo,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your DBO',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "cannot be empty";
+                    } else {
+                      return null;
                     }
                   },
-                  color: Colors.green,
-                  text: widget.formType == FormType.AddUser
-                      ? 'Save user'
-                      : widget.formType == FormType.UpdateUser
-                          ? 'Update User'
-                          : 'Delete user',
                 ),
-                if (widget.formType != FormType.UpdateUser)
-                  EditingButton(
+              SizedBox(height: 20),
+              if (widget.formType != FormType.DeleteUser)
+                TextFormField(
+                  controller: nationality,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your nationality',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "cannot be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              SizedBox(height: 20),
+              if (widget.formType != FormType.DeleteUser)
+                TextFormField(
+                  controller: phone,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your Phone number',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "cannot be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              SizedBox(height: 20),
+              if (widget.formType != FormType.DeleteUser)
+                TextFormField(
+                  controller: result,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your result',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "cannot be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              SizedBox(height: 20),
+              if (widget.formType != FormType.DeleteUser)
+                TextFormField(
+                  controller: resultDate,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your result date',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "cannot be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              SizedBox(height: 20),
+              if (widget.formType != FormType.DeleteUser)
+                TextFormField(
+                  controller: reviewedBy,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your Dr name',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "cannot be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              SizedBox(height: 20),
+              if (widget.formType != FormType.DeleteUser)
+                TextFormField(
+                  controller: sex,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your sex',
+                  ),
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "cannot be empty";
+                    } else {
+                      return null;
+                    }
+                  },
+                ),
+              SizedBox(height: 30),
+              Row(
+                children: [
+                  Expanded(
+                    child: EditingButton(
                       onTap: () async {
-                        final UserModel userFind =
-                            await apiFunction.findUser(passportNum.text);
-                        dynamic userInfo = apiFunction.getUserInfo();
-                        fullName.text = userInfo['fullname'];
-                        passportNum.text = userInfo['passportNum'];
-                        dbo.text = userInfo['dbo'];
-                        nationality.text = userInfo['nationality'];
-                        phone.text = userInfo['phone'];
-                        result.text = userInfo['result'];
-                        resultDate.text = userInfo['resultDate'];
-                        reviewedBy.text = userInfo['reviewedBy'];
-                        sex.text = userInfo['sex'];
+                        if (widget.formType == FormType.AddUser) {
+                          final UserModel user = await createUser.createUser(
+                              fullName.text,
+                              passportNum.text,
+                              dbo.text,
+                              nationality.text,
+                              phone.text,
+                              result.text,
+                              resultDate.text,
+                              reviewedBy.text,
+                              sex.text);
+                          formKey.currentState!.reset();
+                        }
+                        if (widget.formType == FormType.UpdateUser) {
+                          final UserModel userUpdate =
+                              await apiFunction.updateUser(
+                                  fullName.text,
+                                  passportNum.text,
+                                  dbo.text,
+                                  nationality.text,
+                                  phone.text,
+                                  result.text,
+                                  resultDate.text,
+                                  reviewedBy.text,
+                                  sex.text);
+                          formKey.currentState!.reset();
+                        }
+                        if (widget.formType == FormType.DeleteUser) {
+                          final UserModel userDelete =
+                              await apiFunction.deleteUser(passportNum.text);
+                        }
                       },
                       color: Colors.green,
-                      text: 'find')
-              ],
-            ),
-          ],
+                      text: widget.formType == FormType.AddUser
+                          ? 'Save user'
+                          : widget.formType == FormType.UpdateUser
+                              ? 'Update User'
+                              : 'Delete user',
+                    ),
+                  ),
+                  if (widget.formType == FormType.UpdateUser)
+                    Expanded(
+                      child: EditingButton(
+                          onTap: () async {
+                            final UserModel userFind =
+                                await apiFunction.findUser(passportNum.text);
+                            dynamic userInfo = apiFunction.getUserInfo();
+                            fullName.text = userInfo['fullname'];
+                            passportNum.text = userInfo['passportNum'];
+                            dbo.text = userInfo['dbo'];
+                            nationality.text = userInfo['nationality'];
+                            phone.text = userInfo['phone'];
+                            result.text = userInfo['result'];
+                            resultDate.text = userInfo['resultDate'];
+                            reviewedBy.text = userInfo['reviewedBy'];
+                            sex.text = userInfo['sex'];
+                          },
+                          color: Colors.green,
+                          text: 'find'),
+                    )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

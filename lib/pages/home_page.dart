@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, constant_identifier_names
 
+import 'package:covid_result_checker/pages/all_users.dart';
 import 'package:covid_result_checker/widgets/form_field.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +69,7 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyFormField(formType: FormType.AllUser),
+                  builder: (context) => AllUsers(),
                 ),
               );
             },

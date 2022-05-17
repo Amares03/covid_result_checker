@@ -58,7 +58,7 @@ class _TxTFieldState extends State<TxTField> {
                   color: isHiddenPassword ? Colors.grey : Colours.mainColor,
                 ),
               )
-            : const SizedBox(),
+            : const SizedBox(height: 0),
       ),
     );
   }

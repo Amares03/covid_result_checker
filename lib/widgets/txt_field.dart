@@ -8,11 +8,13 @@ class TxTField extends StatefulWidget {
     this.isPassword = false,
     required this.editingController,
     this.onTap,
+    this.isConfirmField = false,
   }) : super(key: key);
   final String hintText;
   final bool isPassword;
   final TextEditingController editingController;
   final Function()? onTap;
+  final bool isConfirmField;
 
   @override
   State<TxTField> createState() => _TxTFieldState();
@@ -29,10 +31,17 @@ class _TxTFieldState extends State<TxTField> {
       style: TextStyle(
         color: Colors.grey.shade500,
       ),
+      onChanged: (value) {},
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(15),
         isDense: true,
         hintText: widget.hintText,
+        errorBorder: UnderlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: const BorderSide(
+            color: Colors.red,
+          ),
+        ),
         hintStyle: TextStyle(
           color: Colors.grey.withOpacity(0.6),
           fontSize: 15,

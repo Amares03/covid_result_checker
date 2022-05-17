@@ -1,6 +1,7 @@
 import 'package:covid_result_checker/firebase_options.dart';
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
+import 'package:covid_result_checker/pages/register_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,7 @@ void main() {
     const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Covid Result Checker',
-      home: HomePage(),
+      home: FirstScreenHandler(),
     ),
   );
 }
@@ -34,7 +35,7 @@ class FirstScreenHandler extends StatelessWidget {
                 return const HomePage();
               } else {
                 // goto verify email view for let make it empty
-                return const SizedBox();
+                return const RegisterView();
               }
             } else {
               return const LoginView();

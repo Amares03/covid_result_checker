@@ -7,6 +7,7 @@ import 'package:covid_result_checker/widgets/header_widget.dart';
 import 'package:covid_result_checker/widgets/small_button.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class RegisterView extends StatefulWidget {
@@ -39,6 +40,7 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    var isHiddenPassword = false;
     return Stack(
       children: [
         Container(height: double.maxFinite, color: Colors.white),
@@ -79,6 +81,7 @@ class _RegisterViewState extends State<RegisterView> {
                           TxTField(
                             editingController: passwordController,
                             hintText: 'official service number',
+                            isPassword: true,
                           ),
                           const SizedBox(height: 15),
                           const SmallText(text: 'Confirm service number'),

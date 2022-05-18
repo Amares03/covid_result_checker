@@ -2,6 +2,7 @@ import 'package:covid_result_checker/firebase_options.dart';
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
 import 'package:covid_result_checker/pages/register_view.dart';
+import 'package:covid_result_checker/pages/verify_view.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,16 @@ import 'package:flutter/material.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    const MaterialApp(
+    MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Covid Result Checker',
-      home: FirstScreenHandler(),
+      home: const FirstScreenHandler(),
+      routes: {
+        '/homepage/': (context) => const HomePage(),
+        '/login/': (context) => const LoginView(),
+        '/register/': (context) => const RegisterView(),
+        '/verify/': (context) => const VerifyView(),
+      },
     ),
   );
 }
@@ -34,8 +41,7 @@ class FirstScreenHandler extends StatelessWidget {
               if (user.emailVerified) {
                 return const HomePage();
               } else {
-                // goto verify email view for let make it empty
-                return const RegisterView();
+                return const VerifyView();
               }
             } else {
               return const LoginView();

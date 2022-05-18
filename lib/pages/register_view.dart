@@ -60,116 +60,113 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
                 const SizedBox(height: 25),
                 FormBackgroundCard(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SmallText(
-                          text: 'Company\'s Email',
-                        ),
-                        const SizedBox(height: 5),
-                        TxTField(
-                          editingController: emailController,
-                          hintText: 'example@mailservice.com',
-                        ),
-                        const SizedBox(height: 15),
-                        const SmallText(text: 'Service number'),
-                        const SizedBox(height: 5),
-                        TxTField(
-                          editingController: passwordController,
-                          hintText: 'official service number',
-                          isPassword: true,
-                        ),
-                        const SizedBox(height: 15),
-                        const SmallText(text: 'Confirm service number'),
-                        const SizedBox(height: 5),
-                        TxTField(
-                          editingController: confirmController,
-                          hintText: 'confirm service number',
-                          isPassword: true,
-                        ),
-                        const SizedBox(height: 20),
-                        // register button
-                        BigButton(
-                          onTap: () async {
-                            final email = emailController.text;
-                            final password = passwordController.text;
-                            final comfirm = confirmController.text;
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SmallText(
+                        text: 'Company\'s Email',
+                      ),
+                      const SizedBox(height: 5),
+                      TxTField(
+                        editingController: emailController,
+                        hintText: 'example@mailservice.com',
+                      ),
+                      const SizedBox(height: 15),
+                      const SmallText(text: 'Service number'),
+                      const SizedBox(height: 5),
+                      TxTField(
+                        editingController: passwordController,
+                        hintText: 'official service number',
+                        isPassword: true,
+                      ),
+                      const SizedBox(height: 15),
+                      const SmallText(text: 'Confirm service number'),
+                      const SizedBox(height: 5),
+                      TxTField(
+                        editingController: confirmController,
+                        hintText: 'confirm service number',
+                        isPassword: true,
+                      ),
+                      const SizedBox(height: 20),
+                      // register button
+                      BigButton(
+                        onTap: () async {
+                          final email = emailController.text;
+                          final password = passwordController.text;
+                          final comfirm = confirmController.text;
 
-                            if (password == comfirm &&
-                                password.isNotEmpty &&
-                                comfirm.isNotEmpty) {
-                              try {
-                                final userCredential = await FirebaseAuth
-                                    .instance
-                                    .createUserWithEmailAndPassword(
-                                  email: email,
-                                  password: password,
-                                );
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == 'weak-password') {
-                                  await showErrorDialog(
-                                    message: 'Weak password entered',
-                                    context: context,
-                                  );
-                                } else if (e.code == 'email-already-in-use') {
-                                  await showErrorDialog(
-                                    message:
-                                        'Email already in use, try another!',
-                                    context: context,
-                                  );
-                                } else if (e.code == 'invalid-email') {
-                                  await showErrorDialog(
-                                    message: 'Invalid email used',
-                                    context: context,
-                                  );
-                                }
-                              }
-                            } else {
-                              if (email.isEmpty) {
+                          if (password == comfirm &&
+                              password.isNotEmpty &&
+                              comfirm.isNotEmpty &&
+                              email.isNotEmpty) {
+                            try {
+                              await FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                email: email,
+                                password: password,
+                              );
+                              final user = FirebaseAuth.instance.currentUser;
+                              await user?.sendEmailVerification();
+                              Navigator.of(context).pushNamed('/verify/');
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'weak-password') {
                                 await showErrorDialog(
-                                  message: 'Email field can not be left blank.',
+                                  message: 'Weak password entered',
                                   context: context,
                                 );
-                              } else if (!email.contains('@') ||
-                                  !email.contains('.')) {
+                              } else if (e.code == 'email-already-in-use') {
                                 await showErrorDialog(
-                                  message: 'Invalid email address used.',
+                                  message: 'Email already in use, try another!',
                                   context: context,
                                 );
-                              } else if (password.isEmpty || comfirm.isEmpty) {
+                              } else if (e.code == 'invalid-email') {
                                 await showErrorDialog(
-                                  message: 'Please fill the password field.',
-                                  context: context,
-                                );
-                              } else if (password != comfirm) {
-                                await showErrorDialog(
-                                  message: 'Password field does\'nt match.',
+                                  message: 'Invalid email used',
                                   context: context,
                                 );
                               }
                             }
-                          },
-                          text: 'Register',
-                        ),
-                        const SizedBox(height: 10),
-                        // optional login button
-                        SmallButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const LoginView(),
-                              ),
-                              (route) => false,
-                            );
-                          },
-                          longText: 'Already have an account? ',
-                          buttonText: 'Login here.',
-                        ),
-                      ],
-                    ),
+                          } else {
+                            if (email.isEmpty) {
+                              await showErrorDialog(
+                                message: 'Email field can not be left blank.',
+                                context: context,
+                              );
+                            } else if (!email.contains('@') ||
+                                !email.contains('.')) {
+                              await showErrorDialog(
+                                message: 'Invalid email address used.',
+                                context: context,
+                              );
+                            } else if (password.isEmpty || comfirm.isEmpty) {
+                              await showErrorDialog(
+                                message: 'Please fill the password field.',
+                                context: context,
+                              );
+                            } else if (password != comfirm) {
+                              await showErrorDialog(
+                                message: 'Password field does\'nt match.',
+                                context: context,
+                              );
+                            }
+                          }
+                        },
+                        text: 'Register',
+                      ),
+                      const SizedBox(height: 10),
+                      // optional login button
+                      SmallButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/login/',
+                            (route) => false,
+                          );
+                        },
+                        longText: 'Already have an account? ',
+                        buttonText: 'Login here.',
+                      ),
+                    ],
                   ),
                 ),
               ],

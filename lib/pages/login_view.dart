@@ -57,83 +57,91 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 const SizedBox(height: 25),
                 FormBackgroundCard(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SmallText(
-                          text: 'Company\'s Email',
-                        ),
-                        const SizedBox(height: 5),
-                        TxTField(
-                          editingController: emailController,
-                          hintText: 'example@mailservice.com',
-                        ),
-                        const SizedBox(height: 15),
-                        const SmallText(text: 'Service number'),
-                        const SizedBox(height: 5),
-                        TxTField(
-                          editingController: passwordController,
-                          hintText: 'official service number',
-                          isPassword: true,
-                        ),
-                        const SizedBox(height: 20),
-                        BigButton(
-                          onTap: () async {
-                            final email = emailController.text;
-                            final password = passwordController.text;
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SmallText(
+                        text: 'Company\'s Email',
+                      ),
+                      const SizedBox(height: 5),
+                      TxTField(
+                        editingController: emailController,
+                        hintText: 'example@mailservice.com',
+                      ),
+                      const SizedBox(height: 15),
+                      const SmallText(text: 'Service number'),
+                      const SizedBox(height: 5),
+                      TxTField(
+                        editingController: passwordController,
+                        hintText: 'official service number',
+                        isPassword: true,
+                      ),
+                      const SizedBox(height: 20),
+                      BigButton(
+                        onTap: () async {
+                          final email = emailController.text;
+                          final password = passwordController.text;
 
-                            try {
-                              if (email.isEmpty) {
-                                await showErrorDialog(
-                                  message: 'Email field can not be left blank.',
-                                  context: context,
-                                );
-                              } else if (password.isEmpty) {
-                                await showErrorDialog(
-                                  message: 'Please fill the password field.',
-                                  context: context,
-                                );
-                              }
-                              await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                email: email,
-                                password: password,
+                          try {
+                            if (email.isEmpty) {
+                              await showErrorDialog(
+                                message: 'Email field can not be left blank.',
+                                context: context,
                               );
-                              print('login success');
-                            } on FirebaseAuthException catch (e) {
-                              if (e.code == 'user-not-found') {
-                                await showErrorDialog(
-                                  message: 'User not found',
-                                  context: context,
-                                );
-                              } else if (e.code == 'wrong-password') {
-                                await showErrorDialog(
-                                  message: 'Wrong password',
-                                  context: context,
-                                );
-                              }
+                            } else if (password.isEmpty) {
+                              await showErrorDialog(
+                                message: 'Please fill the password field.',
+                                context: context,
+                              );
                             }
-                          },
-                          text: 'Login',
-                        ),
-                        const SizedBox(height: 10),
-                        SmallButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RegisterView(),
-                              ),
-                              (route) => false,
+                            await FirebaseAuth.instance
+                                .signInWithEmailAndPassword(
+                              email: email,
+                              password: password,
                             );
-                          },
-                          longText: 'Don\'t have an account yet?',
-                          buttonText: 'Register here.',
-                        ),
-                      ],
-                    ),
+
+                            final user = FirebaseAuth.instance.currentUser;
+
+                            if (user!.emailVerified) {
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                '/homepage/',
+                                (route) => false,
+                              );
+                            } else {
+                              Navigator.of(context).pushNamed('/verify/');
+                            }
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'user-not-found') {
+                              await showErrorDialog(
+                                message: 'User not found',
+                                context: context,
+                              );
+                            } else if (e.code == 'wrong-password') {
+                              await showErrorDialog(
+                                message: 'Wrong password',
+                                context: context,
+                              );
+                            }
+                          }
+                        },
+                        text: 'Login',
+                      ),
+                      const SizedBox(height: 10),
+                      SmallButton(
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const RegisterView(),
+                            ),
+                            (route) => false,
+                          );
+                        },
+                        longText: 'Don\'t have an account yet?',
+                        buttonText: 'Register here.',
+                      ),
+                    ],
                   ),
                 ),
               ],

@@ -97,7 +97,9 @@ class _RegisterViewState extends State<RegisterView> {
                             final password = passwordController.text;
                             final comfirm = confirmController.text;
 
-                            if (password == comfirm) {
+                            if (password == comfirm &&
+                                password.isNotEmpty &&
+                                comfirm.isNotEmpty) {
                               try {
                                 final userCredential = await FirebaseAuth
                                     .instance
@@ -107,15 +109,46 @@ class _RegisterViewState extends State<RegisterView> {
                                 );
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == 'weak-password') {
-                                  print('Weak password entered.');
+                                  await showErrorDialog(
+                                    message: 'Weak password entered',
+                                    context: context,
+                                  );
                                 } else if (e.code == 'email-already-in-use') {
-                                  print('Email already in use, try another!');
+                                  await showErrorDialog(
+                                    message:
+                                        'Email already in use, try another!',
+                                    context: context,
+                                  );
                                 } else if (e.code == 'invalid-email') {
-                                  print('Invalid email used');
+                                  await showErrorDialog(
+                                    message: 'Invalid email used',
+                                    context: context,
+                                  );
                                 }
                               }
                             } else {
-                              print('password doesnt match');
+                              if (email.isEmpty) {
+                                await showErrorDialog(
+                                  message: 'Email field can not be left blank.',
+                                  context: context,
+                                );
+                              } else if (!email.contains('@') ||
+                                  !email.contains('.')) {
+                                await showErrorDialog(
+                                  message: 'Invalid email address used.',
+                                  context: context,
+                                );
+                              } else if (password.isEmpty || comfirm.isEmpty) {
+                                await showErrorDialog(
+                                  message: 'Please fill the password field.',
+                                  context: context,
+                                );
+                              } else if (password != comfirm) {
+                                await showErrorDialog(
+                                  message: 'Password field does\'nt match.',
+                                  context: context,
+                                );
+                              }
                             }
                           },
                           text: 'Register',

@@ -85,6 +85,17 @@ class _LoginViewState extends State<LoginView> {
                             final password = passwordController.text;
 
                             try {
+                              if (email.isEmpty) {
+                                await showErrorDialog(
+                                  message: 'Email field can not be left blank.',
+                                  context: context,
+                                );
+                              } else if (password.isEmpty) {
+                                await showErrorDialog(
+                                  message: 'Please fill the password field.',
+                                  context: context,
+                                );
+                              }
                               await FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
                                 email: email,
@@ -93,9 +104,15 @@ class _LoginViewState extends State<LoginView> {
                               print('login success');
                             } on FirebaseAuthException catch (e) {
                               if (e.code == 'user-not-found') {
-                                print('User not foudnd');
+                                await showErrorDialog(
+                                  message: 'User not found',
+                                  context: context,
+                                );
                               } else if (e.code == 'wrong-password') {
-                                print('Wrong password');
+                                await showErrorDialog(
+                                  message: 'Wrong password',
+                                  context: context,
+                                );
                               }
                             }
                           },
@@ -126,4 +143,25 @@ class _LoginViewState extends State<LoginView> {
       ],
     );
   }
+}
+
+Future<void> showErrorDialog({
+  required String message,
+  required BuildContext context,
+}) {
+  return showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('An error occured!'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Ok'),
+          ),
+        ],
+      );
+    },
+  );
 }

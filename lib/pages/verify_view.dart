@@ -1,6 +1,5 @@
 import 'package:covid_result_checker/widgets/big_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -10,6 +9,10 @@ class VerifyView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
       body: Column(
         children: [
           const SizedBox(height: 80),
@@ -52,9 +55,9 @@ class VerifyView extends StatelessWidget {
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 40),
             child: BigButton(
-              onTap: () {
+              onTap: () async {
                 final user = FirebaseAuth.instance.currentUser;
-                user?.sendEmailVerification();
+                await user?.sendEmailVerification();
                 user?.reload();
               },
               text: 'Send Email Verification',

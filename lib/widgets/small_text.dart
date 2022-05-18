@@ -17,7 +17,7 @@ class SmallText extends StatelessWidget {
       style: TextStyle(
         fontWeight: FontWeight.bold,
         letterSpacing: 1,
-        color: textColor ?? Colors.grey.shade700,
+        color: textColor ?? Colors.grey.shade600,
       ),
     );
   }

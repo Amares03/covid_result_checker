@@ -1,14 +1,17 @@
+import 'package:covid_result_checker/main.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
+import 'package:covid_result_checker/pages/verify_view.dart';
 import 'package:covid_result_checker/widgets/big_button.dart';
 import 'package:covid_result_checker/widgets/big_text.dart';
 import 'package:covid_result_checker/widgets/form_background_card.dart';
-import 'package:covid_result_checker/widgets/gradient_background.dart';
 import 'package:covid_result_checker/widgets/header_widget.dart';
+import 'package:covid_result_checker/widgets/my_custom_scaffold.dart';
 import 'package:covid_result_checker/widgets/small_button.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -18,162 +21,150 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  late TextEditingController emailController;
-  late TextEditingController passwordController;
-  late TextEditingController confirmController;
+  late final TextEditingController email;
+  late final TextEditingController password;
+  late final TextEditingController conPassword;
 
   @override
   void initState() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-    confirmController = TextEditingController();
+    email = TextEditingController();
+    password = TextEditingController();
+    conPassword = TextEditingController();
+
+    password.addListener(() => setState(() {}));
+    conPassword.addListener(() => setState(() {}));
+
     super.initState();
   }
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    confirmController.dispose();
+    email.dispose();
+    password.dispose();
+    conPassword.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Container(height: double.maxFinite, color: Colors.white),
-        const GradientBackground(),
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 100),
-                const HeaderWidget(),
-                const SizedBox(height: 50),
-                const BigText(
-                  text: 'Register a new account',
-                  fontSize: 20,
-                ),
-                const SizedBox(height: 25),
-                FormBackgroundCard(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SmallText(
-                        text: 'Company\'s Email',
-                      ),
-                      const SizedBox(height: 5),
-                      TxTField(
-                        editingController: emailController,
-                        hintText: 'example@mailservice.com',
-                      ),
-                      const SizedBox(height: 15),
-                      const SmallText(text: 'Service number'),
-                      const SizedBox(height: 5),
-                      TxTField(
-                        editingController: passwordController,
-                        hintText: 'official service number',
-                        isPassword: true,
-                      ),
-                      const SizedBox(height: 15),
-                      const SmallText(text: 'Confirm service number'),
-                      const SizedBox(height: 5),
-                      TxTField(
-                        editingController: confirmController,
-                        hintText: 'confirm service number',
-                        isPassword: true,
-                      ),
-                      const SizedBox(height: 20),
-                      // register button
-                      BigButton(
-                        onTap: () async {
-                          final email = emailController.text;
-                          final password = passwordController.text;
-                          final comfirm = confirmController.text;
+    return MyCustomScaffold(
+      scaffold: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 100),
+              const HeaderWidget(),
+              const SizedBox(height: 70),
+              const BigText(text: 'Create new account'),
+              const SizedBox(height: 20),
+              FormBackgroundCard(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SmallText(text: "company's email"),
+                    const SizedBox(height: 5),
+                    TxTField(
+                      hintText: 'example@gmail.com',
+                      editingController: email,
+                    ),
+                    const SizedBox(height: 15),
+                    const SmallText(text: "password"),
+                    const SizedBox(height: 5),
+                    TxTField(
+                      hintText: 'password',
+                      editingController: password,
+                      isPassword: password.text.isNotEmpty ? true : false,
+                    ),
+                    const SizedBox(height: 15),
+                    const SmallText(text: "confirm"),
+                    const SizedBox(height: 5),
+                    TxTField(
+                      hintText: 'confirm password',
+                      editingController: conPassword,
+                      isPassword: conPassword.text.isNotEmpty ? true : false,
+                    ),
+                    const SizedBox(height: 20),
+                    BigButton(
+                      text: 'Sign up',
+                      onTap: () async {
+                        final email = this.email.text;
+                        final password = this.password.text;
+                        final conPassword = this.conPassword.text;
 
-                          if (password == comfirm &&
-                              password.isNotEmpty &&
-                              comfirm.isNotEmpty &&
-                              email.isNotEmpty) {
-                            try {
-                              await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                email: email,
-                                password: password,
+                        if (email.isEmpty ||
+                            password.isEmpty ||
+                            conPassword.isEmpty) {
+                          CommonMethods.displaySnackBar(
+                            context,
+                            title: 'Please fill the fields first.',
+                          );
+                        } else if (password != conPassword) {
+                          CommonMethods.displaySnackBar(
+                            context,
+                            title: 'password does not match',
+                          );
+                        } else {
+                          try {
+                            await FirebaseAuth.instance
+                                .createUserWithEmailAndPassword(
+                              email: email,
+                              password: password,
+                            );
+                            final user = FirebaseAuth.instance.currentUser;
+                            await user?.sendEmailVerification();
+                            PageTransition(
+                              child: const VerifyView(),
+                              type: PageTransitionType.rightToLeft,
+                            );
+                          } on FirebaseAuthException catch (e) {
+                            if (e.code == 'weak-password') {
+                              CommonMethods.displaySnackBar(
+                                context,
+                                title:
+                                    'password is weak, please use stronger one.',
                               );
-                              final user = FirebaseAuth.instance.currentUser;
-                              await user?.sendEmailVerification();
-                              Navigator.of(context).pushNamed('/verify/');
-                            } on FirebaseAuthException catch (e) {
-                              if (e.code == 'weak-password') {
-                                await showErrorDialog(
-                                  message: 'Weak password entered',
-                                  context: context,
-                                );
-                              } else if (e.code == 'email-already-in-use') {
-                                await showErrorDialog(
-                                  message: 'Email already in use, try another!',
-                                  context: context,
-                                );
-                              } else if (e.code == 'invalid-email') {
-                                await showErrorDialog(
-                                  message: 'Invalid email used',
-                                  context: context,
-                                );
-                              }
-                            }
-                          } else {
-                            if (email.isEmpty) {
-                              await showErrorDialog(
-                                message: 'Email field can not be left blank.',
-                                context: context,
+                            } else if (e.code == 'email-already-in-use') {
+                              CommonMethods.displaySnackBar(
+                                context,
+                                title:
+                                    'Email already in use, please use another one.',
                               );
-                            } else if (!email.contains('@') ||
-                                !email.contains('.')) {
-                              await showErrorDialog(
-                                message: 'Invalid email address used.',
-                                context: context,
-                              );
-                            } else if (password.isEmpty || comfirm.isEmpty) {
-                              await showErrorDialog(
-                                message: 'Please fill the password field.',
-                                context: context,
-                              );
-                            } else if (password != comfirm) {
-                              await showErrorDialog(
-                                message: 'Password field does\'nt match.',
-                                context: context,
+                            } else if (e.code == 'invalid-email') {
+                              CommonMethods.displaySnackBar(
+                                context,
+                                title:
+                                    'Email is invalid. please use a valid one.',
                               );
                             }
                           }
-                        },
-                        text: 'Register',
-                      ),
-                      const SizedBox(height: 10),
-                      // optional login button
-                      SmallButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            '/login/',
-                            (route) => false,
-                          );
-                        },
-                        longText: 'Already have an account? ',
-                        buttonText: 'Login here.',
-                      ),
-                    ],
-                  ),
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    SmallButton(
+                      longText: "Already have an account?",
+                      buttonText: 'Login here',
+                      onPressed: () {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          PageTransition(
+                            child: const LoginView(),
+                            type: PageTransitionType.fade,
+                          ),
+                          (route) => false,
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      ],
+      ),
     );
   }
 }

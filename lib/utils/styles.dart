@@ -3,10 +3,9 @@ import 'package:flutter/material.dart'
 
 class Styles {
   static BoxShadow boxShadow = const BoxShadow(
-    color: Colors.black26,
-    blurRadius: 3,
-    spreadRadius: 5,
-    blurStyle: BlurStyle.outer,
+    color: Colors.black12,
+    blurRadius: 10,
+    spreadRadius: 2,
     offset: Offset(0, 3),
   );
 }

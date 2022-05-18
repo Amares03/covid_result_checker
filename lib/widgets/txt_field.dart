@@ -31,7 +31,6 @@ class _TxTFieldState extends State<TxTField> {
       style: TextStyle(
         color: Colors.grey.shade500,
       ),
-      onChanged: (value) {},
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(15),
         isDense: true,
@@ -60,8 +59,9 @@ class _TxTFieldState extends State<TxTField> {
         ),
         suffixIcon: widget.isPassword
             ? InkWell(
-                onTap: () =>
-                    setState(() => isHiddenPassword = !isHiddenPassword),
+                onTap: () => setState(
+                  () => isHiddenPassword = !isHiddenPassword,
+                ),
                 child: Icon(
                   isHiddenPassword ? Icons.visibility_off : Icons.visibility,
                   color: isHiddenPassword ? Colors.grey : Colours.mainColor,

@@ -40,84 +40,106 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    var isHiddenPassword = false;
     return Stack(
       children: [
         Container(height: double.maxFinite, color: Colors.white),
         const GradientBackground(),
         Scaffold(
           backgroundColor: Colors.transparent,
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 100),
-                  const HeaderWidget(),
-                  const SizedBox(height: 50),
-                  const BigText(
-                    text: 'Register a new account',
-                    fontSize: 20,
-                  ),
-                  const SizedBox(height: 25),
-                  FormBackgroundCard(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SmallText(
-                            text: 'Company\'s Email',
-                          ),
-                          const SizedBox(height: 5),
-                          TxTField(
-                            editingController: emailController,
-                            hintText: 'example@mailservice.com',
-                          ),
-                          const SizedBox(height: 15),
-                          const SmallText(text: 'Service number'),
-                          const SizedBox(height: 5),
-                          TxTField(
-                            editingController: passwordController,
-                            hintText: 'official service number',
-                            isPassword: true,
-                          ),
-                          const SizedBox(height: 15),
-                          const SmallText(text: 'Confirm service number'),
-                          const SizedBox(height: 5),
-                          TxTField(
-                            editingController: confirmController,
-                            hintText: 'confirm service number',
-                            isPassword: true,
-                          ),
-                          const SizedBox(height: 20),
-                          // register button
-                          BigButton(
-                            onTap: () {},
-                            text: 'Register',
-                          ),
-                          const SizedBox(height: 10),
-                          // optional login button
-                          SmallButton(
-                            onPressed: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoginView(),
-                                ),
-                                (route) => false,
-                              );
-                            },
-                            longText: 'Already have an account? ',
-                            buttonText: 'Login here.',
-                          ),
-                        ],
-                      ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 100),
+                const HeaderWidget(),
+                const SizedBox(height: 50),
+                const BigText(
+                  text: 'Register a new account',
+                  fontSize: 20,
+                ),
+                const SizedBox(height: 25),
+                FormBackgroundCard(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SmallText(
+                          text: 'Company\'s Email',
+                        ),
+                        const SizedBox(height: 5),
+                        TxTField(
+                          editingController: emailController,
+                          hintText: 'example@mailservice.com',
+                        ),
+                        const SizedBox(height: 15),
+                        const SmallText(text: 'Service number'),
+                        const SizedBox(height: 5),
+                        TxTField(
+                          editingController: passwordController,
+                          hintText: 'official service number',
+                          isPassword: true,
+                        ),
+                        const SizedBox(height: 15),
+                        const SmallText(text: 'Confirm service number'),
+                        const SizedBox(height: 5),
+                        TxTField(
+                          editingController: confirmController,
+                          hintText: 'confirm service number',
+                          isPassword: true,
+                        ),
+                        const SizedBox(height: 20),
+                        // register button
+                        BigButton(
+                          onTap: () async {
+                            final email = emailController.text;
+                            final password = passwordController.text;
+                            final comfirm = confirmController.text;
+
+                            if (password == comfirm) {
+                              try {
+                                final userCredential = await FirebaseAuth
+                                    .instance
+                                    .createUserWithEmailAndPassword(
+                                  email: email,
+                                  password: password,
+                                );
+                              } on FirebaseAuthException catch (e) {
+                                if (e.code == 'weak-password') {
+                                  print('Weak password entered.');
+                                } else if (e.code == 'email-already-in-use') {
+                                  print('Email already in use, try another!');
+                                } else if (e.code == 'invalid-email') {
+                                  print('Invalid email used');
+                                }
+                              }
+                            } else {
+                              print('password doesnt match');
+                            }
+                          },
+                          text: 'Register',
+                        ),
+                        const SizedBox(height: 10),
+                        // optional login button
+                        SmallButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginView(),
+                              ),
+                              (route) => false,
+                            );
+                          },
+                          longText: 'Already have an account? ',
+                          buttonText: 'Login here.',
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

@@ -42,12 +42,18 @@ class FirstScreenHandler extends StatelessWidget {
               return const LoginView();
             }
           default:
-            return Column(
-              children: const [
-                HeaderWidget(),
-                SizedBox(height: 20),
-                CircularProgressIndicator(),
-              ],
+            return Container(
+              color: Colors.white,
+              height: double.maxFinite,
+              width: double.maxFinite,
+              child: Column(
+                children: const [
+                  SizedBox(height: 100),
+                  HeaderWidget(),
+                  SizedBox(height: 20),
+                  CircularProgressIndicator(),
+                ],
+              ),
             );
         }
       },

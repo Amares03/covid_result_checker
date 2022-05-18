@@ -7,6 +7,7 @@ import 'package:covid_result_checker/widgets/header_widget.dart';
 import 'package:covid_result_checker/widgets/small_button.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class LoginView extends StatefulWidget {
@@ -42,67 +43,83 @@ class _LoginViewState extends State<LoginView> {
         const GradientBackground(),
         Scaffold(
           backgroundColor: Colors.transparent,
-          body: Padding(
+          body: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 100),
-                  const HeaderWidget(),
-                  const SizedBox(height: 50),
-                  const BigText(
-                    text: 'Welcome back to the service',
-                    fontSize: 20,
-                  ),
-                  const SizedBox(height: 25),
-                  FormBackgroundCard(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SmallText(
-                            text: 'Company\'s Email',
-                          ),
-                          const SizedBox(height: 5),
-                          TxTField(
-                            editingController: emailController,
-                            hintText: 'example@mailservice.com',
-                          ),
-                          const SizedBox(height: 15),
-                          const SmallText(text: 'Service number'),
-                          const SizedBox(height: 5),
-                          TxTField(
-                            editingController: passwordController,
-                            hintText: 'official service number',
-                            isPassword: true,
-                          ),
-                          const SizedBox(height: 20),
-                          BigButton(
-                            onTap: () {},
-                            text: 'Login',
-                          ),
-                          const SizedBox(height: 10),
-                          SmallButton(
-                            onPressed: () {
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const RegisterView(),
-                                ),
-                                (route) => false,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 100),
+                const HeaderWidget(),
+                const SizedBox(height: 50),
+                const BigText(
+                  text: 'Welcome back to the service',
+                  fontSize: 20,
+                ),
+                const SizedBox(height: 25),
+                FormBackgroundCard(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SmallText(
+                          text: 'Company\'s Email',
+                        ),
+                        const SizedBox(height: 5),
+                        TxTField(
+                          editingController: emailController,
+                          hintText: 'example@mailservice.com',
+                        ),
+                        const SizedBox(height: 15),
+                        const SmallText(text: 'Service number'),
+                        const SizedBox(height: 5),
+                        TxTField(
+                          editingController: passwordController,
+                          hintText: 'official service number',
+                          isPassword: true,
+                        ),
+                        const SizedBox(height: 20),
+                        BigButton(
+                          onTap: () async {
+                            final email = emailController.text;
+                            final password = passwordController.text;
+
+                            try {
+                              await FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                email: email,
+                                password: password,
                               );
-                            },
-                            longText: 'Don\'t have an account yet?',
-                            buttonText: 'Register here.',
-                          ),
-                        ],
-                      ),
+                              print('login success');
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                print('User not foudnd');
+                              } else if (e.code == 'wrong-password') {
+                                print('Wrong password');
+                              }
+                            }
+                          },
+                          text: 'Login',
+                        ),
+                        const SizedBox(height: 10),
+                        SmallButton(
+                          onPressed: () {
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RegisterView(),
+                              ),
+                              (route) => false,
+                            );
+                          },
+                          longText: 'Don\'t have an account yet?',
+                          buttonText: 'Register here.',
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),

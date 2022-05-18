@@ -33,14 +33,13 @@ class FirstScreenHandler extends StatelessWidget {
           case ConnectionState.done:
             final user = FirebaseAuth.instance.currentUser;
             if (user != null) {
-              print(user.emailVerified);
               if (user.emailVerified) {
                 return const HomePage();
               } else {
                 return const VerifyView();
               }
             } else {
-              return const RegisterView();
+              return const LoginView();
             }
           default:
             return Column(

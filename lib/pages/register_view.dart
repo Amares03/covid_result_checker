@@ -91,9 +91,9 @@ class _RegisterViewState extends State<RegisterView> {
                     BigButton(
                       text: 'Sign up',
                       onTap: () async {
-                        final email = this.email.text;
-                        final password = this.password.text;
-                        final conPassword = this.conPassword.text;
+                        final email = this.email.text.trim();
+                        final password = this.password.text.trim();
+                        final conPassword = this.conPassword.text.trim();
 
                         if (email.isEmpty ||
                             password.isEmpty ||
@@ -116,9 +116,11 @@ class _RegisterViewState extends State<RegisterView> {
                             );
                             final user = FirebaseAuth.instance.currentUser;
                             await user?.sendEmailVerification();
-                            PageTransition(
-                              child: const VerifyView(),
-                              type: PageTransitionType.rightToLeft,
+                            Navigator.of(context).push(
+                              PageTransition(
+                                child: const VerifyView(),
+                                type: PageTransitionType.rightToLeft,
+                              ),
                             );
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'weak-password') {

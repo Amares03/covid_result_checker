@@ -1,4 +1,5 @@
 import 'package:covid_result_checker/main.dart';
+import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/register_view.dart';
 import 'package:covid_result_checker/pages/verify_view.dart';
 import 'package:covid_result_checker/widgets/big_button.dart';
@@ -28,9 +29,7 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     email = TextEditingController();
     password = TextEditingController();
-    password.addListener(() {
-      setState(() {});
-    });
+    password.addListener(() => setState(() {}));
     super.initState();
   }
 
@@ -79,8 +78,8 @@ class _LoginViewState extends State<LoginView> {
                     BigButton(
                       text: 'Login',
                       onTap: () async {
-                        final email = this.email.text;
-                        final password = this.password.text;
+                        final email = this.email.text.trim();
+                        final password = this.password.text.trim();
                         // make sure the fields are not empty
                         if (email.isEmpty || password.isEmpty) {
                           CommonMethods.displaySnackBar(
@@ -92,22 +91,27 @@ class _LoginViewState extends State<LoginView> {
                         try {
                           // create a new user
                           await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
+                              .signInWithEmailAndPassword(
                             email: email,
                             password: password,
                           );
                           final user = FirebaseAuth.instance.currentUser;
                           // make sure email is verified before going to homepage
                           if (user?.emailVerified ?? false) {
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/homepage/',
+                            Navigator.of(context).pushAndRemoveUntil(
+                              PageTransition(
+                                child: const HomePage(),
+                                type: PageTransitionType.rightToLeft,
+                              ),
                               (route) => false,
                             );
                           } else {
                             // if email is not verified goto verify page
-                            PageTransition(
-                              child: const VerifyView(),
-                              type: PageTransitionType.rightToLeft,
+                            Navigator.of(context).push(
+                              PageTransition(
+                                child: const VerifyView(),
+                                type: PageTransitionType.rightToLeft,
+                              ),
                             );
                           }
                           // this are exceptions that will happen during authentication
@@ -132,6 +136,7 @@ class _LoginViewState extends State<LoginView> {
                         }
                       },
                     ),
+                    const SizedBox(height: 10),
                     // A littel text button that take us to Registration page
                     SmallButton(
                       longText: "Don't have an account yet?",

@@ -1,10 +1,16 @@
 // ignore_for_file: prefer_const_constructors, constant_identifier_names
 
 import 'package:covid_result_checker/pages/all_users.dart';
+import 'package:covid_result_checker/pages/login_view.dart';
+import 'package:covid_result_checker/utils/colors.dart';
 import 'package:covid_result_checker/widgets/form_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 enum FormType { AddUser, UpdateUser, DeleteUser, AllUser }
+
+enum MenuAction { logOut }
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,7 +24,49 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Home page title"),
+        title: Text(
+          "Welcome!",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+            letterSpacing: 1,
+          ),
+        ),
+        elevation: 0,
+        backgroundColor: Colours.mainColor,
+        actions: [
+          PopupMenuButton<MenuAction>(
+            color: Colors.white,
+            icon: Icon(Icons.logout),
+            onSelected: (value) async {
+              switch (value) {
+                case MenuAction.logOut:
+                  final shouldLogout = await showLogoutDialog(context);
+                  if (shouldLogout) {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.of(context).pushAndRemoveUntil(
+                      PageTransition(
+                        child: LoginView(),
+                        type: PageTransitionType.leftToRight,
+                      ),
+                      (route) => false,
+                    );
+                  }
+              }
+            },
+            itemBuilder: (context) {
+              return const [
+                PopupMenuItem(
+                  value: MenuAction.logOut,
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ];
+            },
+          ),
+        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -110,4 +158,28 @@ class EditingButton extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<bool> showLogoutDialog(BuildContext context) {
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text('Sign out'),
+        content: const Text('Are you sure you want to sign out?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Logout'),
+          ),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }

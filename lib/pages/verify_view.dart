@@ -78,9 +78,9 @@ class _VerifyViewState extends State<VerifyView> {
             child: Text(
               isVerified
                   ? 'the email verification was success. click the below button to go to the homepage.'
-                  : 'We have sent you an email verification link. Please open the link and verify your email address.',
+                  : 'We sent you an email verification link. Please open the link and verify your email address.',
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.grey,
               ),
             ),

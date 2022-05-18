@@ -3,6 +3,7 @@ import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
 import 'package:covid_result_checker/pages/register_view.dart';
 import 'package:covid_result_checker/pages/verify_view.dart';
+import 'package:covid_result_checker/utils/colors.dart';
 import 'package:covid_result_checker/widgets/header_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,16 +43,15 @@ class FirstScreenHandler extends StatelessWidget {
               return const LoginView();
             }
           default:
-            return Container(
-              color: Colors.white,
-              height: double.maxFinite,
-              width: double.maxFinite,
-              child: Column(
-                children: const [
-                  SizedBox(height: 100),
-                  HeaderWidget(),
-                  SizedBox(height: 20),
-                  CircularProgressIndicator(),
+            return Scaffold(
+              body: Column(
+                children: [
+                  const SizedBox(height: 100),
+                  const HeaderWidget(),
+                  const SizedBox(height: 20),
+                  CircularProgressIndicator(
+                    color: Colours.mainColor,
+                  ),
                 ],
               ),
             );

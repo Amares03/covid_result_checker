@@ -42,7 +42,6 @@ class _LoginViewState extends State<LoginView> {
     super.dispose();
   }
 
-// mongodb+srv://yonasalem:<yonasalem>@cluster0.bpuk9.mongodb.net/?retryWrites=true&w=majority
   changeLodingState(newState) {
     setState(() {
       isLoading = newState;

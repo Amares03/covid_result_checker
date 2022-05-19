@@ -6,10 +6,12 @@ class BigButton extends StatelessWidget {
     Key? key,
     required this.text,
     this.onTap,
+    this.fontSize,
   }) : super(key: key);
 
   final String text;
   final Function()? onTap;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +37,10 @@ class BigButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 17,
+            fontSize: fontSize ?? 17,
             letterSpacing: 1,
           ),
         ),

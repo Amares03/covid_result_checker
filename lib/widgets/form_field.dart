@@ -1,10 +1,9 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/services/createUser.dart';
 import 'package:covid_result_checker/services/apiFunctions.dart';
 import 'package:covid_result_checker/services/userModel.dart';
 import 'package:covid_result_checker/utils/colors.dart';
+import 'package:covid_result_checker/widgets/big_button.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -25,17 +24,20 @@ class _MyFormFieldState extends State<MyFormField> {
   TextEditingController fullName = TextEditingController();
   TextEditingController passportNum = TextEditingController();
   TextEditingController dbo = TextEditingController();
-  // TextEditingController nationality = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController result = TextEditingController();
-  TextEditingController resultDate = TextEditingController();
   TextEditingController reviewedBy = TextEditingController();
   TextEditingController sex = TextEditingController();
 
   final List<String> genderMenuList = ['Male', 'Female'];
   String? selectedGenderType;
 
+  final List<String> resultMenuList = ['Negative', 'Positive'];
+  String? selectedResultType;
+
   String nationalitString = '';
+
+  DateTime selectedDate = DateTime.now();
 
   late TextEditingController firstName;
   late TextEditingController lastName;
@@ -43,6 +45,8 @@ class _MyFormFieldState extends State<MyFormField> {
   late TextEditingController birthDate;
   late TextEditingController nationality;
   late TextEditingController gender;
+  late TextEditingController resultDate;
+  late TextEditingController docName;
 
   @override
   void initState() {
@@ -52,6 +56,8 @@ class _MyFormFieldState extends State<MyFormField> {
     birthDate = TextEditingController();
     nationality = TextEditingController();
     gender = TextEditingController();
+    resultDate = TextEditingController();
+    docName = TextEditingController();
     super.initState();
   }
 
@@ -63,6 +69,8 @@ class _MyFormFieldState extends State<MyFormField> {
     birthDate.dispose();
     nationality.dispose();
     gender.dispose();
+    resultDate.dispose();
+    docName.dispose();
     super.dispose();
   }
 
@@ -70,6 +78,18 @@ class _MyFormFieldState extends State<MyFormField> {
   Widget build(BuildContext context) {
     nationality.text = 'Ethiopia';
     gender.text = 'male';
+
+    birthDate.text = selectedDate.day.toString() +
+        ' / ' +
+        selectedDate.month.toString() +
+        ' / ' +
+        selectedDate.year.toString();
+
+    resultDate.text = selectedDate.day.toString() +
+        ' / ' +
+        selectedDate.month.toString() +
+        ' / ' +
+        selectedDate.year.toString();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colours.mainColor,
@@ -83,7 +103,6 @@ class _MyFormFieldState extends State<MyFormField> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(height: 20),
-
               // full name textfield
               Row(
                 children: [
@@ -115,8 +134,13 @@ class _MyFormFieldState extends State<MyFormField> {
                   Expanded(
                     flex: 3,
                     child: TxTField(
-                      hintText: 'Date of birth',
                       editingController: birthDate,
+                      suffixIcon: IconButton(
+                        onPressed: (() {
+                          _selectDate(context);
+                        }),
+                        icon: Icon(Icons.arrow_drop_down),
+                      ),
                     ),
                   ),
                   SizedBox(width: 10),
@@ -143,6 +167,10 @@ class _MyFormFieldState extends State<MyFormField> {
                             color: Colors.grey.shade700,
                             letterSpacing: 1,
                           ),
+                          dropdownDecoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
                           onChanged: (value) => setState(
                             () => selectedGenderType = value as String,
                           ),
@@ -160,81 +188,95 @@ class _MyFormFieldState extends State<MyFormField> {
               SizedBox(height: 15),
               TxTField(editingController: nationality),
               SizedBox(height: 15),
-              if (widget.formType != FormType.DeleteUser)
-                TextFormField(
-                  controller: phone,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your Phone number',
+              TxTField(
+                suffixIcon: DropdownButtonHideUnderline(
+                  child: DropdownButton2(
+                    hint: Text('Patient result'),
+                    items: resultMenuList.map((item) {
+                      return DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: TextStyle(color: Colors.grey.shade700),
+                        ),
+                      );
+                    }).toList(),
+                    value: selectedResultType,
+                    style: TextStyle(
+                      color: Colors.grey.shade700,
+                      letterSpacing: 1,
+                    ),
+                    dropdownDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.white,
+                    ),
+                    onChanged: (value) => setState(
+                      () => selectedResultType = value as String,
+                    ),
+                    buttonHeight: 42,
+                    buttonWidth: double.maxFinite,
+                    buttonPadding: EdgeInsets.only(left: 20, right: 10),
+                    itemHeight: 40,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
                 ),
+              ),
+
+              SizedBox(height: 15),
+              TxTField(
+                editingController: birthDate,
+                suffixIcon: IconButton(
+                  onPressed: (() {
+                    _selectDate(context);
+                  }),
+                  icon: Icon(Icons.arrow_drop_down,
+                      size: 24, color: Colors.black),
+                ),
+              ),
+
               SizedBox(height: 20),
-              if (widget.formType != FormType.DeleteUser)
-                TextFormField(
-                  controller: result,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your result',
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
+
+              TxTField(
+                editingController: docName,
+                hintText: 'Doctors name',
+              ),
               SizedBox(height: 20),
-              if (widget.formType != FormType.DeleteUser)
-                TextFormField(
-                  controller: resultDate,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your result date',
+              Row(
+                children: [
+                  Container(
+                    height: 150,
+                    width: 150,
+                    color: Colors.red,
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        BigButton(text: 'Get QR Code'),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: BigButton(
+                                text: 'Refresh',
+                                fontSize: 13,
+                                onTap: () {},
+                              ),
+                            ),
+                            SizedBox(width: 10),
+                            Expanded(
+                                child: BigButton(
+                              text: 'Reset',
+                              fontSize: 13,
+                            )),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(height: 20),
-              if (widget.formType != FormType.DeleteUser)
-                TextFormField(
-                  controller: reviewedBy,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your Dr name',
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-              SizedBox(height: 20),
-              if (widget.formType != FormType.DeleteUser)
-                TextFormField(
-                  controller: sex,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your sex',
-                  ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-              SizedBox(height: 30),
               Row(
                 children: [
                   Expanded(
@@ -307,5 +349,19 @@ class _MyFormFieldState extends State<MyFormField> {
         ),
       ),
     );
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2010),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+      });
+    }
   }
 }

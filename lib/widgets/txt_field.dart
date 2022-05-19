@@ -11,6 +11,7 @@ class TxTField extends StatefulWidget {
     this.isConfirmField = false,
     this.mandatory = false,
     this.suffixIcon,
+    this.textFieldEnabled,
   }) : super(key: key);
   final String? hintText;
   final bool isPassword;
@@ -19,6 +20,7 @@ class TxTField extends StatefulWidget {
   final bool isConfirmField;
   final bool mandatory;
   final Widget? suffixIcon;
+  final bool? textFieldEnabled;
 
   @override
   State<TxTField> createState() => _TxTFieldState();
@@ -29,12 +31,11 @@ class _TxTFieldState extends State<TxTField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: widget.suffixIcon == null ? null : widget.editingController,
+      controller: widget.editingController,
       obscureText: widget.isPassword && isHiddenPassword ? true : false,
       autocorrect: widget.isPassword && isHiddenPassword ? true : false,
-      style: TextStyle(
-        color: Colors.grey.shade700,
-      ),
+      enabled: widget.textFieldEnabled ?? true,
+      style: TextStyle(color: Colors.grey.shade700),
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(15),
         isDense: true,

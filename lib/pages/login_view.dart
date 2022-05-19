@@ -13,6 +13,7 @@ import 'package:covid_result_checker/widgets/small_button.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
 
 class LoginView extends StatefulWidget {
@@ -25,7 +26,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController email;
   late final TextEditingController password;
-
+  bool isLoading = false;
   @override
   void initState() {
     email = TextEditingController();
@@ -39,6 +40,14 @@ class _LoginViewState extends State<LoginView> {
     email.dispose();
     password.dispose();
     super.dispose();
+  }
+
+  //
+// mongodb+srv://yonasalem:<password>@cluster0.bpuk9.mongodb.net/?retryWrites=true&w=majority
+  changeLodingState(newState) {
+    setState(() {
+      isLoading = newState;
+    });
   }
 
   @override
@@ -90,11 +99,16 @@ class _LoginViewState extends State<LoginView> {
                         } else {
                           try {
                             // create a new user
+                            setState(() {
+                              isLoading = true;
+                            });
                             await AuthServices.firebase().login(
                               email: email,
                               password: password,
                             );
+
                             final user = AuthServices.firebase().currentUser;
+                            changeLodingState(false);
                             // make sure email is verified before going to homepage
                             if (user?.isEmailVerified ?? false) {
                               Navigator.of(context).pushAndRemoveUntil(
@@ -115,16 +129,19 @@ class _LoginViewState extends State<LoginView> {
                             }
                             // this are exceptions that will happen during authentication
                           } on UserNotFoundAuthException {
+                            changeLodingState(false);
                             CommonMethods.displaySnackBar(
                               context,
                               title: 'User not found!',
                             );
                           } on WrongPasswordAuthException {
+                            changeLodingState(false);
                             CommonMethods.displaySnackBar(
                               context,
                               title: 'wrong password detected!',
                             );
                           } on GenericAuthException {
+                            changeLodingState(false);
                             CommonMethods.displaySnackBar(
                               context,
                               title: 'ErrorCode: Authentication Error',
@@ -151,6 +168,12 @@ class _LoginViewState extends State<LoginView> {
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
+              isLoading
+                  ? const SpinKitThreeInOut(
+                      color: Colors.white,
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),

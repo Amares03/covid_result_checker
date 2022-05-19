@@ -12,6 +12,7 @@ import 'package:covid_result_checker/widgets/small_button.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
 
 class RegisterView extends StatefulWidget {
@@ -25,7 +26,7 @@ class _RegisterViewState extends State<RegisterView> {
   late final TextEditingController email;
   late final TextEditingController password;
   late final TextEditingController conPassword;
-
+  bool isLoading = false;
   @override
   void initState() {
     email = TextEditingController();
@@ -44,6 +45,12 @@ class _RegisterViewState extends State<RegisterView> {
     password.dispose();
     conPassword.dispose();
     super.dispose();
+  }
+
+  changeLodingState(newState) {
+    setState(() {
+      isLoading = newState;
+    });
   }
 
   @override
@@ -110,12 +117,17 @@ class _RegisterViewState extends State<RegisterView> {
                           );
                         } else {
                           try {
+                            setState(() {
+                              isLoading = true;
+                            });
                             await AuthServices.firebase().register(
                               email: email,
                               password: password,
                             );
+                            changeLodingState(false);
                             await AuthServices.firebase()
                                 .sendEmailVerification();
+
                             Navigator.of(context).push(
                               PageTransition(
                                 child: const VerifyView(),
@@ -123,21 +135,25 @@ class _RegisterViewState extends State<RegisterView> {
                               ),
                             );
                           } on WeakPasswordAuthException {
+                            changeLodingState(false);
                             CommonMethods.displaySnackBar(
                               context,
                               title: 'Weak password is detected!',
                             );
                           } on EmailAlreadyInUseAuthException {
-                            await CommonMethods.showErrorDialog(
-                              message: 'used one',
-                              context: context,
+                            changeLodingState(false);
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'Email already used!',
                             );
                           } on InvalidEmailAuthException {
+                            changeLodingState(false);
                             CommonMethods.displaySnackBar(
                               context,
                               title: 'Invalid email detected!',
                             );
                           } on GenericAuthException {
+                            changeLodingState(false);
                             CommonMethods.displaySnackBar(
                               context,
                               title: 'ErrorCode: Authentication Error',
@@ -163,6 +179,12 @@ class _RegisterViewState extends State<RegisterView> {
                   ],
                 ),
               ),
+              const SizedBox(height: 10),
+              isLoading
+                  ? const SpinKitThreeInOut(
+                      color: Colors.white,
+                    )
+                  : const SizedBox(),
             ],
           ),
         ),

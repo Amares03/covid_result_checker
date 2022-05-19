@@ -110,7 +110,7 @@ class _RegisterViewState extends State<RegisterView> {
                           );
                         } else {
                           try {
-                            AuthServices.firebase().register(
+                            await AuthServices.firebase().register(
                               email: email,
                               password: password,
                             );
@@ -128,9 +128,9 @@ class _RegisterViewState extends State<RegisterView> {
                               title: 'Weak password is detected!',
                             );
                           } on EmailAlreadyInUseAuthException {
-                            CommonMethods.displaySnackBar(
-                              context,
-                              title: 'Email already used!',
+                            await CommonMethods.showErrorDialog(
+                              message: 'used one',
+                              context: context,
                             );
                           } on InvalidEmailAuthException {
                             CommonMethods.displaySnackBar(

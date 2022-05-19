@@ -87,49 +87,49 @@ class _LoginViewState extends State<LoginView> {
                             context,
                             title: 'email or password can\'t be empty.',
                           );
-                        }
-
-                        try {
-                          // create a new user
-                          AuthServices.firebase().login(
-                            email: email,
-                            password: password,
-                          );
-                          final user = AuthServices.firebase().currentUser;
-                          // make sure email is verified before going to homepage
-                          if (user?.isEmailVerified ?? false) {
-                            Navigator.of(context).pushAndRemoveUntil(
-                              PageTransition(
-                                child: const HomePage(),
-                                type: PageTransitionType.rightToLeft,
-                              ),
-                              (route) => false,
+                        } else {
+                          try {
+                            // create a new user
+                            await AuthServices.firebase().login(
+                              email: email,
+                              password: password,
                             );
-                          } else {
-                            // if email is not verified goto verify page
-                            Navigator.of(context).push(
-                              PageTransition(
-                                child: const VerifyView(),
-                                type: PageTransitionType.rightToLeft,
-                              ),
+                            final user = AuthServices.firebase().currentUser;
+                            // make sure email is verified before going to homepage
+                            if (user?.isEmailVerified ?? false) {
+                              Navigator.of(context).pushAndRemoveUntil(
+                                PageTransition(
+                                  child: const HomePage(),
+                                  type: PageTransitionType.rightToLeft,
+                                ),
+                                (route) => false,
+                              );
+                            } else {
+                              // if email is not verified goto verify page
+                              Navigator.of(context).push(
+                                PageTransition(
+                                  child: const VerifyView(),
+                                  type: PageTransitionType.rightToLeft,
+                                ),
+                              );
+                            }
+                            // this are exceptions that will happen during authentication
+                          } on UserNotFoundAuthException {
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'User not found!',
+                            );
+                          } on WrongPasswordAuthException {
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'wrong password detected!',
+                            );
+                          } on GenericAuthException {
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'ErrorCode: Authentication Error',
                             );
                           }
-                          // this are exceptions that will happen during authentication
-                        } on UserNotFoundAuthException {
-                          CommonMethods.displaySnackBar(
-                            context,
-                            title: 'User not found!',
-                          );
-                        } on WrongPasswordAuthException {
-                          CommonMethods.displaySnackBar(
-                            context,
-                            title: 'wrong password detected!',
-                          );
-                        } on GenericAuthException {
-                          CommonMethods.displaySnackBar(
-                            context,
-                            title: 'ErrorCode: Authentication Error',
-                          );
                         }
                       },
                     ),

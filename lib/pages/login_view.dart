@@ -2,6 +2,8 @@ import 'package:covid_result_checker/main.dart';
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/register_view.dart';
 import 'package:covid_result_checker/pages/verify_view.dart';
+import 'package:covid_result_checker/services/auth/auth_exceptions.dart';
+import 'package:covid_result_checker/services/auth/auth_services.dart';
 import 'package:covid_result_checker/widgets/big_button.dart';
 import 'package:covid_result_checker/widgets/big_text.dart';
 import 'package:covid_result_checker/widgets/form_background_card.dart';
@@ -10,7 +12,6 @@ import 'package:covid_result_checker/widgets/my_custom_scaffold.dart';
 import 'package:covid_result_checker/widgets/small_button.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -90,14 +91,13 @@ class _LoginViewState extends State<LoginView> {
 
                         try {
                           // create a new user
-                          await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
+                          AuthServices.firebase().login(
                             email: email,
                             password: password,
                           );
-                          final user = FirebaseAuth.instance.currentUser;
+                          final user = AuthServices.firebase().currentUser;
                           // make sure email is verified before going to homepage
-                          if (user?.emailVerified ?? false) {
+                          if (user?.isEmailVerified ?? false) {
                             Navigator.of(context).pushAndRemoveUntil(
                               PageTransition(
                                 child: const HomePage(),
@@ -115,23 +115,20 @@ class _LoginViewState extends State<LoginView> {
                             );
                           }
                           // this are exceptions that will happen during authentication
-                        } on FirebaseAuthException catch (e) {
-                          if (e.code == 'user-not-found') {
-                            CommonMethods.displaySnackBar(
-                              context,
-                              title: 'Company not found',
-                            );
-                          } else if (e.code == 'wrong-password') {
-                            CommonMethods.displaySnackBar(
-                              context,
-                              title: 'Wrong password',
-                            );
-                          }
-                          // this exception is executed when the problem is undefined
-                        } catch (_) {
+                        } on UserNotFoundAuthException {
                           CommonMethods.displaySnackBar(
                             context,
-                            title: 'Something went wrong.',
+                            title: 'User not found!',
+                          );
+                        } on WrongPasswordAuthException {
+                          CommonMethods.displaySnackBar(
+                            context,
+                            title: 'wrong password detected!',
+                          );
+                        } on GenericAuthException {
+                          CommonMethods.displaySnackBar(
+                            context,
+                            title: 'ErrorCode: Authentication Error',
                           );
                         }
                       },

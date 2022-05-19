@@ -1,12 +1,9 @@
-import 'package:covid_result_checker/firebase_options.dart';
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
-import 'package:covid_result_checker/pages/register_view.dart';
 import 'package:covid_result_checker/pages/verify_view.dart';
+import 'package:covid_result_checker/services/auth/auth_services.dart';
 import 'package:covid_result_checker/utils/colors.dart';
 import 'package:covid_result_checker/widgets/header_widget.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 Future<void> main() async {
@@ -26,15 +23,13 @@ class FirstScreenHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      ),
+      future: AuthServices.firebase().initialize(),
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            final user = FirebaseAuth.instance.currentUser;
+            final user = AuthServices.firebase().currentUser;
             if (user != null) {
-              if (user.emailVerified) {
+              if (user.isEmailVerified) {
                 return const HomePage();
               } else {
                 return const VerifyView();

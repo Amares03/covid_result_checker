@@ -1,6 +1,8 @@
 import 'package:covid_result_checker/main.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
 import 'package:covid_result_checker/pages/verify_view.dart';
+import 'package:covid_result_checker/services/auth/auth_exceptions.dart';
+import 'package:covid_result_checker/services/auth/auth_services.dart';
 import 'package:covid_result_checker/widgets/big_button.dart';
 import 'package:covid_result_checker/widgets/big_text.dart';
 import 'package:covid_result_checker/widgets/form_background_card.dart';
@@ -9,7 +11,6 @@ import 'package:covid_result_checker/widgets/my_custom_scaffold.dart';
 import 'package:covid_result_checker/widgets/small_button.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:covid_result_checker/widgets/txt_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -109,39 +110,38 @@ class _RegisterViewState extends State<RegisterView> {
                           );
                         } else {
                           try {
-                            await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
+                            AuthServices.firebase().register(
                               email: email,
                               password: password,
                             );
-                            final user = FirebaseAuth.instance.currentUser;
-                            await user?.sendEmailVerification();
+                            await AuthServices.firebase()
+                                .sendEmailVerification();
                             Navigator.of(context).push(
                               PageTransition(
                                 child: const VerifyView(),
                                 type: PageTransitionType.rightToLeft,
                               ),
                             );
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'weak-password') {
-                              CommonMethods.displaySnackBar(
-                                context,
-                                title:
-                                    'password is weak, please use stronger one.',
-                              );
-                            } else if (e.code == 'email-already-in-use') {
-                              CommonMethods.displaySnackBar(
-                                context,
-                                title:
-                                    'Email already in use, please use another one.',
-                              );
-                            } else if (e.code == 'invalid-email') {
-                              CommonMethods.displaySnackBar(
-                                context,
-                                title:
-                                    'Email is invalid. please use a valid one.',
-                              );
-                            }
+                          } on WeakPasswordAuthException {
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'Weak password is detected!',
+                            );
+                          } on EmailAlreadyInUseAuthException {
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'Email already used!',
+                            );
+                          } on InvalidEmailAuthException {
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'Invalid email detected!',
+                            );
+                          } on GenericAuthException {
+                            CommonMethods.displaySnackBar(
+                              context,
+                              title: 'ErrorCode: Authentication Error',
+                            );
                           }
                         }
                       },

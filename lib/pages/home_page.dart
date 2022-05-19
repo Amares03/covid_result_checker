@@ -2,9 +2,9 @@
 
 import 'package:covid_result_checker/pages/all_users.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
+import 'package:covid_result_checker/services/auth/auth_services.dart';
 import 'package:covid_result_checker/utils/colors.dart';
 import 'package:covid_result_checker/widgets/form_field.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                 case MenuAction.logOut:
                   final shouldLogout = await showLogoutDialog(context);
                   if (shouldLogout) {
-                    await FirebaseAuth.instance.signOut();
+                    AuthServices.firebase().logout();
                     Navigator.of(context).pushAndRemoveUntil(
                       PageTransition(
                         child: LoginView(),

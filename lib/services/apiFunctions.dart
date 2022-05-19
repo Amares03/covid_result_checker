@@ -19,7 +19,7 @@ class ApiFunction {
     String sex,
   ) async {
     final String apiUrl =
-        "https://covid-result-tester.herokuapp.com/api/users/${passportNum}";
+        "https://covid-result-tester.herokuapp.com/api/users/$passportNum";
     final Uri url = Uri.parse(apiUrl);
 
     final response = await http.put(url, body: {

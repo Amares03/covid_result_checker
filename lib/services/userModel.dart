@@ -33,27 +33,31 @@ class UserModel {
   String? reviewedBy;
   String? sex;
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        fullName: json["fullName"],
-        passportNum: json["passportNum"],
-        dbo: json["dbo"],
-        nationality: json["nationality"],
-        phone: json["phone"],
-        result: json["result"],
-        resultDate: json["resultDate"],
-        reviewedBy: json["reviewedBy"],
-        sex: json["sex"],
-      );
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      fullName: json["fullName"],
+      passportNum: json["passportNum"],
+      dbo: json["dbo"],
+      nationality: json["nationality"],
+      phone: json["phone"],
+      result: json["result"],
+      resultDate: json["resultDate"],
+      reviewedBy: json["reviewedBy"],
+      sex: json["sex"],
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-        "fullName": fullName,
-        "passportNum": passportNum,
-        "dbo": dbo,
-        "nationality": nationality,
-        "phone": phone,
-        "result": result,
-        "resultDate": resultDate,
-        "reviewedBy": reviewedBy,
-        "sex": sex,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "fullName": fullName,
+      "passportNum": passportNum,
+      "dbo": dbo,
+      "nationality": nationality,
+      "phone": phone,
+      "result": result,
+      "resultDate": resultDate,
+      "reviewedBy": reviewedBy,
+      "sex": sex,
+    };
+  }
 }

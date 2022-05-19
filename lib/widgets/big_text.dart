@@ -15,6 +15,7 @@ class BigText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: fontSize ?? 24,
         fontWeight: FontWeight.bold,

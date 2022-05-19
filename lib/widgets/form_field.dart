@@ -4,6 +4,9 @@ import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/services/createUser.dart';
 import 'package:covid_result_checker/services/apiFunctions.dart';
 import 'package:covid_result_checker/services/userModel.dart';
+import 'package:covid_result_checker/utils/colors.dart';
+import 'package:covid_result_checker/widgets/txt_field.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 CreateUser createUser = CreateUser();
@@ -22,83 +25,141 @@ class _MyFormFieldState extends State<MyFormField> {
   TextEditingController fullName = TextEditingController();
   TextEditingController passportNum = TextEditingController();
   TextEditingController dbo = TextEditingController();
-  TextEditingController nationality = TextEditingController();
+  // TextEditingController nationality = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController result = TextEditingController();
   TextEditingController resultDate = TextEditingController();
   TextEditingController reviewedBy = TextEditingController();
   TextEditingController sex = TextEditingController();
 
+  final List<String> genderMenuList = ['Male', 'Female'];
+  String? selectedGenderType;
+
+  String nationalitString = '';
+
+  late TextEditingController firstName;
+  late TextEditingController lastName;
+  late TextEditingController idNumber;
+  late TextEditingController birthDate;
+  late TextEditingController nationality;
+  late TextEditingController gender;
+
+  @override
+  void initState() {
+    firstName = TextEditingController();
+    lastName = TextEditingController();
+    idNumber = TextEditingController();
+    birthDate = TextEditingController();
+    nationality = TextEditingController();
+    gender = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    firstName.dispose();
+    lastName.dispose();
+    idNumber.dispose();
+    birthDate.dispose();
+    nationality.dispose();
+    gender.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    nationality.text = 'Ethiopia';
+    gender.text = 'male';
     return Scaffold(
       appBar: AppBar(
-        title: Text('Form Field'),
+        backgroundColor: Colours.mainColor,
+        title: Text('Patient Form Field'),
       ),
       body: Form(
         key: formKey,
         child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(horizontal: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: fullName,
-                decoration: InputDecoration(
-                  hintText: 'Enter your full name',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
               SizedBox(height: 20),
-              TextFormField(
-                controller: passportNum,
-                decoration: InputDecoration(
-                  hintText: 'Enter your passport number',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return "cannot be empty";
-                  } else {
-                    return null;
-                  }
-                },
-              ),
-              SizedBox(height: 20),
-              if (widget.formType != FormType.DeleteUser)
-                TextFormField(
-                  controller: dbo,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your DBO',
+
+              // full name textfield
+              Row(
+                children: [
+                  Expanded(
+                    child: TxTField(
+                      hintText: 'first name',
+                      editingController: firstName,
+                    ),
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-              SizedBox(height: 20),
-              if (widget.formType != FormType.DeleteUser)
-                TextFormField(
-                  controller: nationality,
-                  decoration: InputDecoration(
-                    hintText: 'Enter your nationality',
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TxTField(
+                      hintText: 'last name',
+                      editingController: lastName,
+                      mandatory: true,
+                    ),
                   ),
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return "cannot be empty";
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-              SizedBox(height: 20),
+                ],
+              ),
+              SizedBox(height: 15),
+              TxTField(
+                hintText: 'passport or kebele id',
+                editingController: idNumber,
+                mandatory: true,
+              ),
+              SizedBox(height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: TxTField(
+                      hintText: 'Date of birth',
+                      editingController: birthDate,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    flex: 2,
+                    child: TxTField(
+                      suffixIcon: DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          hint: Text(
+                            'Gender',
+                            style: TextStyle(color: Colors.grey.shade700),
+                          ),
+                          items: genderMenuList.map((item) {
+                            return DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: TextStyle(color: Colors.grey.shade700),
+                              ),
+                            );
+                          }).toList(),
+                          value: selectedGenderType,
+                          style: TextStyle(
+                            color: Colors.grey.shade700,
+                            letterSpacing: 1,
+                          ),
+                          onChanged: (value) => setState(
+                            () => selectedGenderType = value as String,
+                          ),
+                          buttonHeight: 42,
+                          buttonWidth: double.maxFinite,
+                          buttonPadding: EdgeInsets.only(left: 20, right: 10),
+                          itemHeight: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 15),
+              TxTField(editingController: nationality),
+              SizedBox(height: 15),
               if (widget.formType != FormType.DeleteUser)
                 TextFormField(
                   controller: phone,
@@ -181,8 +242,8 @@ class _MyFormFieldState extends State<MyFormField> {
                       onTap: () async {
                         if (widget.formType == FormType.AddUser) {
                           final UserModel user = await createUser.createUser(
-                              fullName.text,
-                              passportNum.text,
+                              '${firstName.text}  ${lastName.text}',
+                              idNumber.text,
                               dbo.text,
                               nationality.text,
                               phone.text,

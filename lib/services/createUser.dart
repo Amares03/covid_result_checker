@@ -22,21 +22,24 @@ class CreateUser {
     final String apiUrl = "https://covid-result-tester.herokuapp.com/api/users";
     final Uri url = Uri.parse(apiUrl);
 
-    final response = await http.post(url, body: {
-      "fullName": fullName,
-      "passportNum": passportNum,
-      "dbo": dbo,
-      "nationality": nationality,
-      "phone": phone,
-      "result": result,
-      "resultDate": resultDate,
-      "reviewedBy": reviewedBy,
-      "sex": sex
-    });
+    final response = await http.post(
+      url,
+      body: {
+        "fullName": fullName,
+        "passportNum": passportNum,
+        "dbo": dbo,
+        "nationality": nationality,
+        "phone": phone,
+        "result": result,
+        "resultDate": resultDate,
+        "reviewedBy": reviewedBy,
+        "sex": sex
+      },
+    );
+
     if (response.statusCode == 200) {
       final String resposeString = response.body;
 
-      // ignore: dead_code
       var iddd = jsonDecode(resposeString);
       sampleid = iddd['sampleId'];
       idd = iddd['_id'];

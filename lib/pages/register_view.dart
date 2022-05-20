@@ -114,12 +114,14 @@ class _RegisterViewState extends State<RegisterView> {
                               conPassword.isEmpty) {
                             CommonMethods.displaySnackBar(
                               context,
-                              title: 'Please fill the fields first.',
+                              errorDescription:
+                                  'Make sure you filled all the fields.',
                             );
                           } else if (password != conPassword) {
                             CommonMethods.displaySnackBar(
                               context,
-                              title: 'password does not match',
+                              errorDescription:
+                                  'Make sure you entered the same password.',
                             );
                           } else {
                             try {
@@ -144,25 +146,29 @@ class _RegisterViewState extends State<RegisterView> {
                               changeLodingState(false);
                               CommonMethods.displaySnackBar(
                                 context,
-                                title: 'Weak password is detected!',
+                                errorDescription:
+                                    'Your password is weak, please use another one.',
                               );
                             } on EmailAlreadyInUseAuthException {
                               changeLodingState(false);
                               CommonMethods.displaySnackBar(
                                 context,
-                                title: 'Email already used!',
+                                errorDescription:
+                                    'The email is already taken, please use another one.',
                               );
                             } on InvalidEmailAuthException {
                               changeLodingState(false);
                               CommonMethods.displaySnackBar(
                                 context,
-                                title: 'Invalid email detected!',
+                                errorDescription:
+                                    'Your email is invalid, please use another one',
                               );
                             } on GenericAuthException {
                               changeLodingState(false);
                               CommonMethods.displaySnackBar(
                                 context,
-                                title: 'ErrorCode: Authentication Error',
+                                errorDescription:
+                                    'ErrorCode: Something terrible happend, please reload the page.',
                               );
                             }
                           }

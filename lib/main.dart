@@ -1,10 +1,13 @@
+import 'package:covid_result_checker/components/custom_snackbar_content.dart';
 import 'package:covid_result_checker/pages/home_page.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
 import 'package:covid_result_checker/pages/verify_view.dart';
 import 'package:covid_result_checker/services/auth/auth_services.dart';
+import 'package:covid_result_checker/services/auth/auth_user.dart';
 import 'package:covid_result_checker/utils/colors.dart';
 import 'package:covid_result_checker/widgets/header_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +30,7 @@ class FirstScreenHandler extends StatelessWidget {
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.done:
-            final user = AuthServices.firebase().currentUser;
+            final AuthUser? user = AuthServices.firebase().currentUser;
             if (user != null) {
               if (user.isEmailVerified) {
                 return const HomePage();
@@ -44,9 +47,7 @@ class FirstScreenHandler extends StatelessWidget {
                   const SizedBox(height: 100),
                   const HeaderWidget(),
                   const SizedBox(height: 20),
-                  CircularProgressIndicator(
-                    color: Colours.mainColor,
-                  ),
+                  SpinKitThreeInOut(color: Colours.mainColor),
                 ],
               ),
             );
@@ -59,19 +60,18 @@ class FirstScreenHandler extends StatelessWidget {
 class CommonMethods {
   static ScaffoldMessengerState displaySnackBar(
     BuildContext context, {
-    required String title,
+    String? errorTitle,
+    required String errorDescription,
     Color? bgColor,
   }) {
     return ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          margin: const EdgeInsets.all(20),
+          elevation: 0,
           behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.horizontal,
-          backgroundColor: bgColor ?? Colors.orange,
-          content: Text(title, textAlign: TextAlign.center),
-          duration: const Duration(milliseconds: 1700),
+          backgroundColor: Colors.transparent,
+          content: CustomSnackbarContent(errorMessage: errorDescription),
         ),
       );
   }

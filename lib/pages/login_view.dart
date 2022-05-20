@@ -98,7 +98,7 @@ class _LoginViewState extends State<LoginView> {
                           if (email.isEmpty || password.isEmpty) {
                             CommonMethods.displaySnackBar(
                               context,
-                              title: 'email or password can\'t be empty.',
+                              errorDescription: 'Email or Password is empty!',
                             );
                           } else {
                             try {
@@ -136,19 +136,22 @@ class _LoginViewState extends State<LoginView> {
                               changeLodingState(false);
                               CommonMethods.displaySnackBar(
                                 context,
-                                title: 'User not found!',
+                                errorDescription:
+                                    'There is no account with this email. Create a new account!',
                               );
                             } on WrongPasswordAuthException {
                               changeLodingState(false);
                               CommonMethods.displaySnackBar(
                                 context,
-                                title: 'wrong password detected!',
+                                errorDescription:
+                                    'The password you entered is wrong.',
                               );
                             } on GenericAuthException {
                               changeLodingState(false);
                               CommonMethods.displaySnackBar(
                                 context,
-                                title: 'ErrorCode: Authentication Error',
+                                errorDescription:
+                                    'ErrorCode: Authentication Error',
                               );
                             }
                           }

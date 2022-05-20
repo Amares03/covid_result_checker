@@ -303,7 +303,7 @@ class _PatientFormFieldState extends State<PatientFormField> {
       isLoading = false;
     });
     resetTextField();
-    CommonMethods.displaySnackBar(context, title: _id.$oid);
+    CommonMethods.displaySnackBar(context, errorDescription: _id.$oid);
   }
 
   void resetTextField() {

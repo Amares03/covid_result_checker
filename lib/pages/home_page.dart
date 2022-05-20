@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, constant_identifier_names
-
 import 'package:covid_result_checker/pages/all_users.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
 import 'package:covid_result_checker/services/auth/auth_services.dart';
@@ -76,7 +74,8 @@ class _HomePageState extends State<HomePage> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MyFormField(formType: FormType.AddUser),
+                  builder: (context) =>
+                      PatientFormField(formType: FormType.AddUser),
                 ),
               );
             },
@@ -90,7 +89,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      MyFormField(formType: FormType.UpdateUser),
+                      PatientFormField(formType: FormType.UpdateUser),
                 ),
               );
             },
@@ -104,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      MyFormField(formType: FormType.DeleteUser),
+                      PatientFormField(formType: FormType.DeleteUser),
                 ),
               );
             },
@@ -113,7 +112,7 @@ class _HomePageState extends State<HomePage> {
           ),
           SizedBox(height: 20),
           EditingButton(
-            onTap: () {
+            onTap: () async {
               Navigator.push(
                 context,
                 MaterialPageRoute(

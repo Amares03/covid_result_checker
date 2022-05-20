@@ -60,4 +60,6 @@ class UserModel {
       "sex": sex,
     };
   }
+
+  find() {}
 }

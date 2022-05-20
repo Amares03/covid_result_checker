@@ -57,7 +57,6 @@ class ApiFunction {
     if (response.statusCode == 200) {
       final String resposeString = response.body;
 
-      // ignore: dead_code
       iddd = jsonDecode(resposeString);
       idd = jsonDecode(resposeString);
       return userModelFromJson(resposeString);
@@ -67,18 +66,28 @@ class ApiFunction {
     }
   }
 
-  Future<UserModel> findAllUser() async {
+  findAllUser() async {
     const String apiUrl = "https://covid-result-tester.herokuapp.com/api/users";
     final Uri url = Uri.parse(apiUrl);
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
-      final String resposeString = response.body;
+      final resposeString = response.body;
 
       // ignore: dead_code
-      iddd = jsonDecode(resposeString);
-      idd = jsonDecode(resposeString);
-      return userModelFromJson(resposeString);
+      final newData = jsonDecode(resposeString);
+      final newData2 = jsonDecode(resposeString);
+      // print(jsonDecode(resposeString));
+      var userss = await ApiFunction().findAllUser();
+      var list = await userss.find().toList();
+      List<UserModel> users = [];
+      for (var v in list) {
+        UserModel user = UserModel(
+          fullName: v.fullName,
+        );
+        users.add(user);
+      }
+      return users;
     } else {
       const String responseString = "not worked";
       return userModelFromJson(responseString);

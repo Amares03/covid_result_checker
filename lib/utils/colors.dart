@@ -16,4 +16,5 @@ class Colours {
 
   static Color mainColor = Colors.blue.shade700;
   static Color secondaryColor = Colors.cyan.shade400;
+  static Color bigTextBlackColor = Colors.grey.shade800;
 }

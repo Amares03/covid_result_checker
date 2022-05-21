@@ -18,9 +18,9 @@ class BigText extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: fontSize ?? 24,
-        fontWeight: FontWeight.bold,
-        letterSpacing: 1,
-        color: color ?? Colors.grey.shade700,
+        fontFamily: 'Foo-Black',
+        letterSpacing: 1.2,
+        color: color ?? Colors.grey.shade800,
       ),
     );
   }

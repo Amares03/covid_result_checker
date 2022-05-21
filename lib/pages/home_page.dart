@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Welcome!",
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
         actions: [
           PopupMenuButton<MenuAction>(
             color: Colors.white,
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onSelected: (value) async {
               switch (value) {
                 case MenuAction.logOut:
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      PatientFormField(formType: FormType.AddUser),
+                      const PatientFormField(formType: FormType.AddUser),
                 ),
               );
             },
@@ -89,38 +89,38 @@ class _HomePageState extends State<HomePage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      PatientFormField(formType: FormType.UpdateUser),
+                      const PatientFormField(formType: FormType.UpdateUser),
                 ),
               );
             },
             color: Colors.red,
             text: 'Update a user',
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           EditingButton(
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      PatientFormField(formType: FormType.DeleteUser),
+                      const PatientFormField(formType: FormType.DeleteUser),
                 ),
               );
             },
             color: Colors.blue,
             text: 'delete a user',
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           EditingButton(
             onTap: () async {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AllUsers(),
+                  builder: (context) => const AllUsers(),
                 ),
               );
             },
-            color: Color.fromARGB(255, 1, 8, 14),
+            color: const Color(0xFF01080E),
             text: 'view all users',
           ),
         ],

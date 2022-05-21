@@ -4,20 +4,27 @@ import 'package:flutter_svg/svg.dart';
 class CustomSnackbarContent extends StatelessWidget {
   const CustomSnackbarContent({
     Key? key,
-    required this.errorMessage,
+    required this.messageDescription,
+    this.messageTitle,
+    this.cardBgColor,
+    this.iconName,
   }) : super(key: key);
 
-  final String errorMessage;
+  final String messageDescription;
+  final String? messageTitle;
+  final Color? cardBgColor;
+  final String? iconName;
 
   @override
   Widget build(BuildContext context) {
+    var iconName = this.iconName ?? 'bubbles';
     return Stack(
       clipBehavior: Clip.none,
       children: [
         Container(
           height: 70,
           decoration: BoxDecoration(
-            color: const Color(0xFFFF6055),
+            color: cardBgColor ?? const Color(0xFFFF6055),
             borderRadius: BorderRadius.circular(20),
           ),
           child: Row(
@@ -28,16 +35,16 @@ class CustomSnackbarContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Spacer(),
-                    const Text(
-                      'Oh Snap!',
-                      style: TextStyle(
+                    Text(
+                      messageTitle ?? 'Oh Snap!',
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.white,
                       ),
                     ),
                     const Spacer(),
                     Text(
-                      errorMessage,
+                      messageDescription,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
@@ -76,10 +83,13 @@ class CustomSnackbarContent extends StatelessWidget {
                 height: 35,
               ),
               Positioned(
-                top: 8,
-                child: SvgPicture.asset(
-                  'assets/close.svg',
-                  height: 16,
+                bottom: 12,
+                child: Icon(
+                  iconName == 'bubbles'
+                      ? Icons.report_problem_sharp
+                      : Icons.check,
+                  color: Colors.white,
+                  size: 18,
                 ),
               ),
             ],

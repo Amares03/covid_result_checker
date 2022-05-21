@@ -16,6 +16,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
 
+import '../components/display_snackbar.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -96,9 +98,9 @@ class _LoginViewState extends State<LoginView> {
                           final password = this.password.text.trim();
                           // make sure the fields are not empty
                           if (email.isEmpty || password.isEmpty) {
-                            CommonMethods.displaySnackBar(
+                            displaySnackBar(
                               context,
-                              errorDescription: 'Email or Password is empty!',
+                              messageDescription: 'Email or Password is empty!',
                             );
                           } else {
                             try {
@@ -134,24 +136,21 @@ class _LoginViewState extends State<LoginView> {
                               // this are exceptions that will happen during authentication
                             } on UserNotFoundAuthException {
                               changeLodingState(false);
-                              CommonMethods.displaySnackBar(
+                              displaySnackBar(
                                 context,
-                                errorDescription:
-                                    'There is no account with this email. Create a new account!',
+                                messageDescription: 'There is no account with this email. Create a new account!',
                               );
                             } on WrongPasswordAuthException {
                               changeLodingState(false);
-                              CommonMethods.displaySnackBar(
+                              displaySnackBar(
                                 context,
-                                errorDescription:
-                                    'The password you entered is wrong.',
+                                messageDescription: 'The password you entered is wrong.',
                               );
                             } on GenericAuthException {
                               changeLodingState(false);
-                              CommonMethods.displaySnackBar(
+                              displaySnackBar(
                                 context,
-                                errorDescription:
-                                    'ErrorCode: Authentication Error',
+                                messageDescription: 'ErrorCode: Authentication Error',
                               );
                             }
                           }

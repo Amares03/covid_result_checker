@@ -1,6 +1,7 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:covid_result_checker/helper/database_manager.dart';
 import 'package:covid_result_checker/helper/user_model.dart';
-import 'package:covid_result_checker/main.dart';
+import 'package:covid_result_checker/services/enums.dart';
 import 'package:covid_result_checker/utils/colors.dart';
 import 'package:covid_result_checker/widgets/big_button.dart';
 import 'package:covid_result_checker/widgets/patient_info_text_field.dart';
@@ -9,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:mongo_dart/mongo_dart.dart' as m;
+
+import '../components/display_snackbar.dart';
 
 class PatientFormField extends StatefulWidget {
   const PatientFormField({Key? key, this.formType}) : super(key: key);
@@ -50,7 +53,6 @@ class _PatientFormFieldState extends State<PatientFormField> {
     gender = TextEditingController();
     result = TextEditingController();
     resultDate = TextEditingController();
-    docName = TextEditingController();
 
     birthDate.text = '${today.day} / ${today.month} / ${today.year}';
     resultDate.text = '${today.day} / ${today.month} / ${today.year}';
@@ -253,10 +255,43 @@ class _PatientFormFieldState extends State<PatientFormField> {
                             ),
                             BigButton(
                               onTap: () {
-                                setState(() {
-                                  isLoading = true;
-                                });
-                                insertData();
+                                if (firstName.text.isEmpty ||
+                                    lastName.text.isEmpty) {
+                                  displaySnackBar(
+                                    context,
+                                    messageDescription:
+                                        'Make sure that the name field is not empty!',
+                                  );
+                                } else if (idNumber.text.isEmpty) {
+                                  displaySnackBar(
+                                    context,
+                                    messageDescription:
+                                        'Make sure that the Id Verification field is not empty!',
+                                  );
+                                } else if (idNumber.text.length < 4) {
+                                  displaySnackBar(
+                                    context,
+                                    messageDescription:
+                                        'Make sure you entered 4 or more characters in id field!',
+                                  );
+                                } else if (selectedGender == null) {
+                                  displaySnackBar(
+                                    context,
+                                    messageDescription:
+                                        'Please choose patient\'s gender!',
+                                  );
+                                } else if (selectedResult == null) {
+                                  displaySnackBar(
+                                    context,
+                                    messageDescription:
+                                        'Please fill patient\'s result!',
+                                  );
+                                } else {
+                                  setState(() {
+                                    isLoading = true;
+                                  });
+                                  insertData();
+                                }
                               },
                               text: 'Save patient data.',
                               fontSize: 15,
@@ -275,10 +310,8 @@ class _PatientFormFieldState extends State<PatientFormField> {
               height: double.maxFinite,
               width: double.maxFinite,
               color: Colors.black.withOpacity(0.2),
-              child: const Center(
-                child: SpinKitThreeInOut(
-                  color: Colors.white,
-                ),
+              child: Center(
+                child: SpinKitThreeInOut(color: Colours.mainColor),
               ),
             ),
         ],
@@ -287,7 +320,6 @@ class _PatientFormFieldState extends State<PatientFormField> {
   }
 
   Future<void> insertData() async {
-    final _id = m.ObjectId();
     final patientData = PatientModel(
       fullName: '${firstName.text} ${lastName.text}',
       passportNumber: idNumber.text,
@@ -297,13 +329,30 @@ class _PatientFormFieldState extends State<PatientFormField> {
       result: selectedResult!,
       resultTakenDate: resultDate.text,
     );
-    await DatabaseManager.addNewPatient(patient: patientData);
-    await Future.delayed(Duration(seconds: 1));
-    setState(() {
-      isLoading = false;
-    });
+    OperationStatus newResult = await DatabaseManager.addNewPatient(
+      patient: patientData,
+    );
+
+    if (newResult == OperationStatus.createSuccess) {
+      Navigator.of(context).pop();
+      displaySnackBar(
+        context,
+        messageDescription: 'New patient data created!',
+        cardBgColor: Colors.green,
+        iconName: 'success',
+        messageTitle: 'Success',
+      );
+    } else {
+      displaySnackBar(
+        context,
+        messageDescription: 'Something terrible happened!',
+        messageTitle: 'Oh snap!',
+      );
+    }
+
+    setState(() => isLoading = false);
+
     resetTextField();
-    CommonMethods.displaySnackBar(context, errorDescription: _id.$oid);
   }
 
   void resetTextField() {
@@ -392,60 +441,3 @@ class _PatientFormFieldState extends State<PatientFormField> {
     }
   }
 }
-
-//                         if (widget.formType == FormType.UpdateUser) {
-//                           final UserModel userUpdate =
-//                               await apiFunction.updateUser(
-//                                   fullName.text,
-//                                   passportNum.text,
-//                                   dbo.text,
-//                                   nationality.text,
-//                                   phone.text,
-//                                   result.text,
-//                                   resultDate.text,
-//                                   reviewedBy.text,
-//                                   sex.text);
-//                           formKey.currentState!.reset();
-//                         }
-//                         if (widget.formType == FormType.DeleteUser) {
-//                           final UserModel userDelete =
-//                               await apiFunction.deleteUser(passportNum.text);
-//                         }
-//                       },
-//                       color: Colors.green,
-//                       text: widget.formType == FormType.AddUser
-//                           ? 'Save user'
-//                           : widget.formType == FormType.UpdateUser
-//                               ? 'Update User'
-//                               : 'Delete user',
-//                     ),
-//                   ),
-//                   if (widget.formType == FormType.UpdateUser)
-//                     Expanded(
-//                       child: EditingButton(
-//                           onTap: () async {
-//                             final UserModel userFind =
-//                                 await apiFunction.findUser(passportNum.text);
-//                             dynamic userInfo = apiFunction.getUserInfo();
-//                             fullName.text = userInfo['fullname'];
-//                             passportNum.text = userInfo['passportNum'];
-//                             dbo.text = userInfo['dbo'];
-//                             nationality.text = userInfo['nationality'];
-//                             phone.text = userInfo['phone'];
-//                             result.text = userInfo['result'];
-//                             resultDate.text = userInfo['resultDate'];
-//                             reviewedBy.text = userInfo['reviewedBy'];
-//                             sex.text = userInfo['sex'];
-//                           },
-//                           color: Colors.green,
-//                           text: 'find'),
-//                     )
-//                 ],
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }

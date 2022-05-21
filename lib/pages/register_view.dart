@@ -1,4 +1,3 @@
-import 'package:covid_result_checker/main.dart';
 import 'package:covid_result_checker/pages/login_view.dart';
 import 'package:covid_result_checker/pages/verify_view.dart';
 import 'package:covid_result_checker/services/auth/auth_exceptions.dart';
@@ -14,6 +13,8 @@ import 'package:covid_result_checker/widgets/txt_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:page_transition/page_transition.dart';
+
+import '../components/display_snackbar.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
@@ -109,19 +110,15 @@ class _RegisterViewState extends State<RegisterView> {
                           final password = this.password.text.trim();
                           final conPassword = this.conPassword.text.trim();
 
-                          if (email.isEmpty ||
-                              password.isEmpty ||
-                              conPassword.isEmpty) {
-                            CommonMethods.displaySnackBar(
+                          if (email.isEmpty || password.isEmpty || conPassword.isEmpty) {
+                            displaySnackBar(
                               context,
-                              errorDescription:
-                                  'Make sure you filled all the fields.',
+                              messageDescription: 'Make sure you filled all the fields.',
                             );
                           } else if (password != conPassword) {
-                            CommonMethods.displaySnackBar(
+                            displaySnackBar(
                               context,
-                              errorDescription:
-                                  'Make sure you entered the same password.',
+                              messageDescription: 'Make sure you entered the same password.',
                             );
                           } else {
                             try {
@@ -133,8 +130,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 password: password,
                               );
                               changeLodingState(false);
-                              await AuthServices.firebase()
-                                  .sendEmailVerification();
+                              await AuthServices.firebase().sendEmailVerification();
 
                               Navigator.of(context).push(
                                 PageTransition(
@@ -144,31 +140,27 @@ class _RegisterViewState extends State<RegisterView> {
                               );
                             } on WeakPasswordAuthException {
                               changeLodingState(false);
-                              CommonMethods.displaySnackBar(
+                              displaySnackBar(
                                 context,
-                                errorDescription:
-                                    'Your password is weak, please use another one.',
+                                messageDescription: 'Your password is weak, please use another one.',
                               );
                             } on EmailAlreadyInUseAuthException {
                               changeLodingState(false);
-                              CommonMethods.displaySnackBar(
+                              displaySnackBar(
                                 context,
-                                errorDescription:
-                                    'The email is already taken, please use another one.',
+                                messageDescription: 'The email is already taken, please use another one.',
                               );
                             } on InvalidEmailAuthException {
                               changeLodingState(false);
-                              CommonMethods.displaySnackBar(
+                              displaySnackBar(
                                 context,
-                                errorDescription:
-                                    'Your email is invalid, please use another one',
+                                messageDescription: 'Your email is invalid, please use another one',
                               );
                             } on GenericAuthException {
                               changeLodingState(false);
-                              CommonMethods.displaySnackBar(
+                              displaySnackBar(
                                 context,
-                                errorDescription:
-                                    'ErrorCode: Something terrible happend, please reload the page.',
+                                messageDescription: 'ErrorCode: Something terrible happend, please reload the page.',
                               );
                             }
                           }

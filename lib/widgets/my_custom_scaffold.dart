@@ -17,12 +17,12 @@ class MyCustomScaffold extends StatelessWidget {
         ),
         Positioned(
           bottom: 0,
-          right: 0,
           left: 0,
+          right: 0,
           child: ClipPath(
             clipper: SkewCut(context),
             child: Container(
-              height: 350,
+              height: 450,
               width: double.maxFinite,
               decoration: BoxDecoration(
                 gradient: LinearGradient(

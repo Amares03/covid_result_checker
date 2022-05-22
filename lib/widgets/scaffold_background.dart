@@ -1,11 +1,13 @@
 import 'package:covid_result_checker/utils/colors.dart';
-import 'package:covid_result_checker/widgets/skew_shape.dart';
 import 'package:flutter/material.dart';
 
-class MyCustomScaffold extends StatelessWidget {
-  const MyCustomScaffold({Key? key, required this.scaffold}) : super(key: key);
+import 'container_clipper.dart';
 
-  final Widget scaffold;
+class ScaffoldBackground extends StatelessWidget {
+  const ScaffoldBackground({Key? key, required this.scaffold, this.height}) : super(key: key);
+
+  final Scaffold scaffold;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +15,13 @@ class MyCustomScaffold extends StatelessWidget {
       children: [
         Container(
           height: double.maxFinite,
+          width: double.maxFinite,
           color: Colors.white,
-        ),
-        Positioned(
-          bottom: 0,
-          left: 0,
-          right: 0,
+          alignment: Alignment.bottomCenter,
           child: ClipPath(
-            clipper: SkewCut(context),
+            clipper: ContainerClipper(context: context),
             child: Container(
-              height: 450,
+              height: height ?? 450,
               width: double.maxFinite,
               decoration: BoxDecoration(
                 gradient: LinearGradient(

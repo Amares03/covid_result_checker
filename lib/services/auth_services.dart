@@ -1,6 +1,6 @@
-import 'package:covid_result_checker/services/auth/auth_provider.dart';
-import 'package:covid_result_checker/services/auth/auth_user.dart';
-import 'package:covid_result_checker/services/auth/firebase_auth_provider.dart';
+import 'auth_provider.dart';
+import 'auth_user.dart';
+import 'firebase_auth_provider.dart';
 
 class AuthServices implements AuthProvider {
   final AuthProvider provider;

@@ -1,4 +1,4 @@
-import 'package:covid_result_checker/services/auth/auth_user.dart';
+import 'auth_user.dart';
 
 abstract class AuthProvider {
   Future<void> initialize();

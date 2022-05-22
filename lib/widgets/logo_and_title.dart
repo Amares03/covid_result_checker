@@ -1,8 +1,8 @@
 import 'package:covid_result_checker/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({
+class LogoAndTitle extends StatelessWidget {
+  const LogoAndTitle({
     Key? key,
   }) : super(key: key);
 
@@ -11,10 +11,7 @@ class HeaderWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(
-          'assets/logo.png',
-          height: 120,
-        ),
+        Image.asset('assets/logo.png', height: 120),
         const SizedBox(width: 20),
         Text(
           'Covid Result\nChecker',

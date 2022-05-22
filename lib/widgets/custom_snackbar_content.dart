@@ -7,17 +7,16 @@ class CustomSnackbarContent extends StatelessWidget {
     required this.messageDescription,
     this.messageTitle,
     this.cardBgColor,
-    this.iconName,
+    this.iconData,
   }) : super(key: key);
 
   final String messageDescription;
   final String? messageTitle;
   final Color? cardBgColor;
-  final String? iconName;
+  final IconData? iconData;
 
   @override
   Widget build(BuildContext context) {
-    var iconName = this.iconName ?? 'bubbles';
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -40,6 +39,7 @@ class CustomSnackbarContent extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.white,
+                        fontFamily: 'Foo-Bold',
                       ),
                     ),
                     const Spacer(),
@@ -49,7 +49,7 @@ class CustomSnackbarContent extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: Colors.white,
-                        fontSize: 14,
+                        fontSize: 13,
                       ),
                     ),
                     const Spacer(),
@@ -83,11 +83,9 @@ class CustomSnackbarContent extends StatelessWidget {
                 height: 35,
               ),
               Positioned(
-                bottom: 12,
+                bottom: 11,
                 child: Icon(
-                  iconName == 'bubbles'
-                      ? Icons.report_problem_sharp
-                      : Icons.check,
+                  iconData,
                   color: Colors.white,
                   size: 18,
                 ),

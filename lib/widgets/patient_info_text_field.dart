@@ -34,12 +34,6 @@ class PatientInfoTextField extends StatelessWidget {
             isDense: true,
             hintText: hintText,
             suffixIcon: suffixIcon,
-            errorBorder: UnderlineInputBorder(
-              borderRadius: BorderRadius.circular(15),
-              borderSide: const BorderSide(
-                color: Colors.red,
-              ),
-            ),
             hintStyle: TextStyle(
               color: Colors.grey.withOpacity(0.6),
               fontSize: 15,

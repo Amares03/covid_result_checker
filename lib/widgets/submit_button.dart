@@ -1,17 +1,12 @@
-import 'package:covid_result_checker/utils/colors.dart';
 import 'package:flutter/material.dart';
 
-class BigButton extends StatelessWidget {
-  const BigButton({
-    Key? key,
-    required this.text,
-    this.onTap,
-    this.fontSize,
-  }) : super(key: key);
+import '../utils/colors.dart';
 
-  final String text;
-  final Function()? onTap;
-  final double? fontSize;
+class SubmitButton extends StatelessWidget {
+  const SubmitButton({Key? key, required this.buttonText, this.onPressed}) : super(key: key);
+
+  final String buttonText;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +14,7 @@ class BigButton extends StatelessWidget {
       width: double.maxFinite,
       height: 48,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(10),
         gradient: LinearGradient(
           colors: Colours.gradient2,
           begin: Alignment.bottomLeft,
@@ -27,21 +22,20 @@ class BigButton extends StatelessWidget {
         ),
       ),
       child: ElevatedButton(
-        onPressed: onTap,
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           primary: Colors.transparent,
           shadowColor: Colors.transparent,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(10),
           ),
         ),
         child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: fontSize ?? 17,
+          buttonText,
+          style: const TextStyle(
             letterSpacing: 1,
+            fontSize: 16,
+            fontFamily: 'Foo-Bold',
           ),
         ),
       ),

@@ -7,7 +7,7 @@ ScaffoldMessengerState displaySnackBar(
   required String messageDescription,
   Color? cardBgColor,
   String? messageTitle,
-  String? iconName,
+  IconData? iconData,
 }) {
   return ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
@@ -20,7 +20,7 @@ ScaffoldMessengerState displaySnackBar(
           messageDescription: messageDescription,
           cardBgColor: cardBgColor,
           messageTitle: messageTitle,
-          iconName: iconName,
+          iconData: iconData,
         ),
       ),
     );

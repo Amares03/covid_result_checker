@@ -1,10 +1,10 @@
 import 'package:covid_result_checker/firebase_options.dart';
-import 'package:covid_result_checker/services/auth/auth_provider.dart';
-import 'package:covid_result_checker/services/auth/auth_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'auth_exceptions.dart';
+import 'auth_provider.dart';
+import 'auth_user.dart';
 
 class FirebaseAuthProvider implements AuthProvider {
   @override

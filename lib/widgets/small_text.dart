@@ -1,3 +1,4 @@
+import 'package:covid_result_checker/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class SmallText extends StatelessWidget {
@@ -15,9 +16,8 @@ class SmallText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontWeight: FontWeight.bold,
         letterSpacing: 1,
-        color: textColor ?? Colors.grey.shade600,
+        color: textColor ?? Colours.bigTextBlackColor,
       ),
     );
   }

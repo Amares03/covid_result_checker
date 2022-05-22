@@ -1,3 +1,4 @@
+import 'package:covid_result_checker/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class BigText extends StatelessWidget {
@@ -18,9 +19,9 @@ class BigText extends StatelessWidget {
       textAlign: TextAlign.center,
       style: TextStyle(
         fontSize: fontSize ?? 24,
-        fontFamily: 'Foo-Black',
+        fontFamily: 'Foo-Bold',
         letterSpacing: 1.2,
-        color: color ?? Colors.grey.shade800,
+        color: color ?? Colours.bigTextBlackColor,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:covid_result_checker/utils/colors.dart';
+import 'package:covid_result_checker/views/all_patient_view.dart';
 import 'package:covid_result_checker/views/login_view.dart';
 import 'package:covid_result_checker/views/patient_register_view.dart';
 import 'package:covid_result_checker/widgets/scaffold_background.dart';
@@ -161,7 +162,7 @@ class _HomeViewState extends State<HomeView> {
                     child: TaskButton(
                       onTap: () {},
                       icon: Icons.update,
-                      color: Color(0xffb774bd),
+                      color: const Color(0xffb774bd),
                       title: 'Update',
                       desc: 'Alter an existing record.',
                     ),
@@ -173,7 +174,9 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   Expanded(
                     child: TaskButton(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, AllPatienView.routeName);
+                      },
                       color: const Color(0xFFdb7634),
                       icon: Icons.view_list_rounded,
                       title: 'View All',

@@ -1,3 +1,4 @@
+import 'package:covid_result_checker/views/all_patient_view.dart';
 import 'package:covid_result_checker/views/home_view.dart';
 import 'package:covid_result_checker/views/patient_register_view.dart';
 import 'package:covid_result_checker/views/register_view.dart';
@@ -64,6 +65,13 @@ class MyApp extends StatelessWidget {
           case PatientRegisterView.routeName:
             return PageTransition(
               child: const PatientRegisterView(),
+              type: PageTransitionType.rightToLeft,
+              curve: Curves.easeIn,
+              settings: settings,
+            );
+          case AllPatienView.routeName:
+            return PageTransition(
+              child: const AllPatienView(),
               type: PageTransitionType.rightToLeft,
               curve: Curves.easeIn,
               settings: settings,

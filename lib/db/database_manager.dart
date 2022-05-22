@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'constants.dart';
 import 'user_model.dart';
 import 'package:http/http.dart' as http;
@@ -32,6 +34,17 @@ class DatabaseManager {
       return OperationStatus.createSuccess;
     } else {
       return OperationStatus.createFailed;
+    }
+  }
+
+  static Future<List<PatientModel>> viewAllPatient() async {
+    final response = await http.get(Uri.parse(apiUri));
+
+    if (response.statusCode == 200) {
+      final body = json.decode(response.body);
+      return body.map<PatientModel>(PatientModel.fromJson).toList();
+    } else {
+      throw Exception('Failed to load album');
     }
   }
 }

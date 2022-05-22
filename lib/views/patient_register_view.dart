@@ -6,7 +6,6 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 import '../db/database_manager.dart';
 import '../db/user_model.dart';
-import '../utils/colors.dart';
 import '../widgets/patient_info_text_field.dart';
 
 class PatientRegisterView extends StatefulWidget {
@@ -231,7 +230,7 @@ class _PatientRegisterViewState extends State<PatientRegisterView> {
                                 onPressed: () {
                                   setState(() {
                                     qrData =
-                                        'https://covid-result-tester.herokuapp.com/test-result-using-qr-code/$idNumber';
+                                        'https://covid-result-tester.herokuapp.com/test-result-using-qr-code/${idNumber.text}';
                                   });
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -421,7 +420,7 @@ class _PatientRegisterViewState extends State<PatientRegisterView> {
         resetTextField();
         displaySnackBar(
           context,
-          messageDescription: 'New patient data created!',
+          messageDescription: 'Data saved successfully.',
           cardBgColor: Colors.green,
           iconData: Icons.check,
           messageTitle: 'Success',
@@ -429,8 +428,8 @@ class _PatientRegisterViewState extends State<PatientRegisterView> {
       } else {
         displaySnackBar(
           context,
-          messageDescription: 'Something terrible happened!',
-          messageTitle: 'Oh snap!',
+          messageDescription: 'There is a problem, please try again!',
+          messageTitle: 'Unknown Error',
         );
       }
       setState(() => loading = false);

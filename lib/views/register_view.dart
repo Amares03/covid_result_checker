@@ -95,13 +95,22 @@ class _RegisterViewState extends State<RegisterView> {
                         isPassword: _password.text.isEmpty ? false : true,
                       ),
                       const SizedBox(height: 10),
-                      const SmallText(text: "Confirm password"),
+                      const Hero(
+                        tag: 'title',
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: SmallText(text: "Confirm password"),
+                        ),
+                      ),
                       const SizedBox(height: 5),
                       Hero(
                         tag: 'password',
-                        child: AuthTextField(
-                          controller: _confirmPassword,
-                          isPassword: _confirmPassword.text.isEmpty ? false : true,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: AuthTextField(
+                            controller: _confirmPassword,
+                            isPassword: _confirmPassword.text.isEmpty ? false : true,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 25),

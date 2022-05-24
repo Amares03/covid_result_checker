@@ -47,4 +47,38 @@ class DatabaseManager {
       throw Exception('Failed to load album');
     }
   }
+
+  static Future getSinglePatientModel({required String id}) async {
+    final response = await http.get(Uri.parse('$apiUri$id'));
+
+    if (response.statusCode == 200) {
+      final patient = PatientModel.fromJson(json.decode(response.body));
+      return patient;
+    } else {
+      return '';
+    }
+  }
+
+  static Future<OperationStatus> updateUser({required PatientModel patient}) async {
+    final Uri url = Uri.parse('$apiUri${patient.passportNumber}');
+
+    final response = await http.put(
+      url,
+      body: {
+        'fullName': patient.fullName,
+        'passportNum': patient.passportNumber,
+        'dbo': patient.dateOfBirth,
+        'sex': patient.gender,
+        'nationality': patient.nationality,
+        'result': patient.result,
+        'resultDate': patient.resultTakenDate,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return OperationStatus.updateSuccess;
+    } else {
+      return OperationStatus.updateFailed;
+    }
+  }
 }

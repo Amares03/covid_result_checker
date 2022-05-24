@@ -11,7 +11,6 @@ import 'package:covid_result_checker/widgets/logo_and_title.dart';
 import 'package:covid_result_checker/widgets/scaffold_background.dart';
 import 'package:covid_result_checker/widgets/small_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../widgets/loading_widget.dart';
 import '../widgets/submit_button.dart';
@@ -85,13 +84,22 @@ class _LoginViewState extends State<LoginView> {
                       const SizedBox(height: 5),
                       AuthTextField(controller: _email),
                       const SizedBox(height: 10),
-                      const SmallText(text: "Password"),
+                      const Hero(
+                        tag: 'title',
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: SmallText(text: "Password"),
+                        ),
+                      ),
                       const SizedBox(height: 5),
                       Hero(
                         tag: 'password',
-                        child: AuthTextField(
-                          controller: _password,
-                          isPassword: _password.text.isEmpty ? false : true,
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: AuthTextField(
+                            controller: _password,
+                            isPassword: _password.text.isEmpty ? false : true,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 25),
